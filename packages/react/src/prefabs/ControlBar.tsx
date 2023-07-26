@@ -9,7 +9,7 @@ import { ChatToggle } from '../components/controls/ChatToggle';
 import { useLocalParticipantPermissions } from '../hooks';
 import { useMediaQuery } from '../hooks/internal';
 import { useMaybeLayoutContext } from '../context';
-import { supportsScreenSharing } from '@livekit/components-core';
+import { isMobileBrowser } from '@livekit/components-core';
 
 /** @public */
 export type ControlBarControls = {
@@ -21,10 +21,11 @@ export type ControlBarControls = {
 };
 
 /** @public */
-export interface ControlBarProps extends React.HTMLAttributes<HTMLDivElement> {
-  variation?: 'minimal' | 'verbose' | 'textOnly';
+export type ControlBarProps = React.HTMLAttributes<HTMLDivElement> & {
+  variation?: "minimal" | "verbose" | "textOnly";
   controls?: ControlBarControls;
-}
+  isAdmin?: boolean;
+};
 
 /**
  * The ControlBar prefab component gives the user the basic user interface
@@ -42,7 +43,7 @@ export interface ControlBarProps extends React.HTMLAttributes<HTMLDivElement> {
  * ```
  * @public
  */
-export function ControlBar({ variation, controls, ...props }: ControlBarProps) {
+export function ControlBar({ variation, controls, isAdmin, ...props }: ControlBarProps) {
   const [isChatOpen, setIsChatOpen] = React.useState(false);
   const layoutContext = useMaybeLayoutContext();
   React.useEffect(() => {
@@ -52,7 +53,7 @@ export function ControlBar({ variation, controls, ...props }: ControlBarProps) {
   }, [layoutContext?.widget.state?.showChat]);
   const isTooLittleSpace = useMediaQuery(`(max-width: ${isChatOpen ? 1000 : 760}px)`);
 
-  const defaultVariation = isTooLittleSpace ? 'minimal' : 'verbose';
+  const defaultVariation = isTooLittleSpace ? "minimal" : "verbose";
   variation ??= defaultVariation;
 
   const visibleControls = { leave: true, ...controls };
@@ -72,15 +73,15 @@ export function ControlBar({ variation, controls, ...props }: ControlBarProps) {
   }
 
   const showIcon = React.useMemo(
-    () => variation === 'minimal' || variation === 'verbose',
-    [variation],
+    () => variation === "minimal" || variation === "verbose",
+    [variation]
   );
   const showText = React.useMemo(
-    () => variation === 'textOnly' || variation === 'verbose',
-    [variation],
+    () => variation === "textOnly" || variation === "verbose",
+    [variation]
   );
 
-  const browserSupportsScreenSharing = supportsScreenSharing();
+  const isMobile = React.useMemo(() => isMobileBrowser(), []);
 
   const [isScreenShareEnabled, setIsScreenShareEnabled] = React.useState(false);
 
@@ -90,48 +91,59 @@ export function ControlBar({ variation, controls, ...props }: ControlBarProps) {
 
   return (
     <div className="lk-control-bar" {...props}>
-      {visibleControls.microphone && (
-        <div className="lk-button-group">
-          <TrackToggle source={Track.Source.Microphone} showIcon={showIcon}>
-            {showText && 'Microphone'}
-          </TrackToggle>
-          <div className="lk-button-group-menu">
-            <MediaDeviceMenu kind="audioinput" />
-          </div>
-        </div>
-      )}
       {visibleControls.camera && (
         <div className="lk-button-group">
-          <TrackToggle source={Track.Source.Camera} showIcon={showIcon}>
-            {showText && 'Camera'}
+          <TrackToggle
+            source={Track.Source.Camera}
+            showIcon={showIcon}
+          >
+            {showText && "Camera"}
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu kind="videoinput" />
           </div>
         </div>
       )}
-      {visibleControls.screenShare && browserSupportsScreenSharing && (
+
+      {visibleControls.microphone && (
+        <div className="lk-button-group">
+          <TrackToggle
+            source={Track.Source.Microphone}
+            showIcon={showIcon}
+          >
+            {showText && "Microphone"}
+          </TrackToggle>
+          <div className="lk-button-group-menu">
+            <MediaDeviceMenu kind="audioinput" />
+          </div>
+        </div>
+      )}
+
+      {visibleControls.screenShare && !isMobile && (
         <TrackToggle
           source={Track.Source.ScreenShare}
-          captureOptions={{ audio: true, selfBrowserSurface: 'include' }}
+          captureOptions={{ audio: true, selfBrowserSurface: "include" }}
           showIcon={showIcon}
           onChange={onScreenShareChange}
         >
-          {showText && (isScreenShareEnabled ? 'Stop screen share' : 'Share screen')}
+          {showText && (isScreenShareEnabled ? "Stop screen share" : "Share Screen")}
         </TrackToggle>
       )}
+
       {visibleControls.chat && (
         <ChatToggle>
           {showIcon && <ChatIcon />}
-          {showText && 'Chat'}
+          {showText && "Chat"}
         </ChatToggle>
       )}
+
       {visibleControls.leave && (
         <DisconnectButton>
           {showIcon && <LeaveIcon />}
-          {showText && 'Leave'}
+          {showText && (isAdmin ? "End" : "Leave")}
         </DisconnectButton>
       )}
+
       <StartAudio label="Start Audio" />
     </div>
   );

@@ -19,6 +19,10 @@ import { ScreenShareIcon } from '../../assets/icons';
 import { VideoTrack } from './VideoTrack';
 import { AudioTrack } from './AudioTrack';
 import { useParticipantTile } from '../../hooks';
+import ButtonWithToolTip from '../controls/ButtonWithToolTip';
+import LeaveIcon from '../../assets/images/LeaveIcon';
+import MicIcon from '../../assets/images/MicIcon';
+import CamIcon from '../../assets/images/CamIcon';
 
 /** @public */
 export function ParticipantContextIfNeeded(
@@ -37,13 +41,16 @@ export function ParticipantContextIfNeeded(
 }
 
 /** @public */
-export interface ParticipantTileProps extends React.HTMLAttributes<HTMLDivElement> {
+export type ParticipantTileProps = React.HTMLAttributes<HTMLDivElement> & {
   disableSpeakingIndicator?: boolean;
   participant?: Participant;
   source?: Track.Source;
   publication?: TrackPublication;
   onParticipantClick?: (event: ParticipantClickEvent) => void;
-}
+  onKick?: (identity: string) => void;
+  onMute?: (identity: string, trackSid: string, type?: 'audio' | 'video') => void;
+  localIdentity?: string;
+};
 
 /**
  * The ParticipantTile component is the base utility wrapper for displaying a visual representation of a participant.
@@ -57,20 +64,23 @@ export interface ParticipantTileProps extends React.HTMLAttributes<HTMLDivElemen
  * ```
  * @public
  */
-export function ParticipantTile({
-  participant,
-  children,
-  source = Track.Source.Camera,
-  onParticipantClick,
-  publication,
-  disableSpeakingIndicator,
-  ...htmlProps
-}: ParticipantTileProps) {
+export const ParticipantTile = ({
+                                  participant,
+                                  children,
+                                  source = Track.Source.Camera,
+                                  onParticipantClick,
+                                  publication,
+                                  disableSpeakingIndicator,
+                                  onMute,
+                                  onKick,
+                                  localIdentity,
+                                  ...htmlProps
+                                }: ParticipantTileProps) => {
   const p = useEnsureParticipant(participant);
   const trackRef: TrackReferenceOrPlaceholder = useMaybeTrackContext() ?? {
     participant: p,
     source,
-    publication,
+    publication
   };
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
@@ -79,7 +89,7 @@ export function ParticipantTile({
     source: trackRef.source,
     publication: trackRef.publication,
     disableSpeakingIndicator,
-    onParticipantClick,
+    onParticipantClick
   });
 
   const layoutContext = useMaybeLayoutContext();
@@ -93,18 +103,22 @@ export function ParticipantTile({
         layoutContext.pin.dispatch &&
         isParticipantSourcePinned(trackRef.participant, trackRef.source, layoutContext.pin.state)
       ) {
-        layoutContext.pin.dispatch({ msg: 'clear_pin' });
+        layoutContext.pin.dispatch({ msg: "clear_pin" });
       }
     },
-    [trackRef.participant, layoutContext, trackRef.source],
+    [trackRef.participant, layoutContext, trackRef.source]
   );
 
+  const audioTrack = trackRef.participant.getTrack(Track.Source.Microphone);
+  const videoTrack = trackRef.participant.getTrack(Track.Source.Camera);
+  const localUser = trackRef.participant.identity === localIdentity;
+
   return (
-    <div style={{ position: 'relative' }} {...elementProps}>
+    <div style={{ position: "relative" }} {...elementProps}>
       <ParticipantContextIfNeeded participant={trackRef.participant}>
         {children ?? (
           <>
-            {trackRef.publication?.kind === 'video' ||
+            {trackRef.publication?.kind === "video" ||
             trackRef.source === Track.Source.Camera ||
             trackRef.source === Track.Source.ScreenShare ? (
               <VideoTrack
@@ -130,23 +144,60 @@ export function ParticipantTile({
                   <>
                     <TrackMutedIndicator
                       source={Track.Source.Microphone}
-                      show={'muted'}
+                      show={"muted"}
                     ></TrackMutedIndicator>
                     <ParticipantName />
                   </>
                 ) : (
                   <>
-                    <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
+                    <ScreenShareIcon style={{ marginRight: "0.25rem" }} />
                     <ParticipantName>&apos;s screen</ParticipantName>
                   </>
                 )}
               </div>
+
               <ConnectionQualityIndicator className="lk-participant-metadata-item" />
             </div>
           </>
         )}
+
+        <div
+          style={{
+            position: "absolute",
+            top: "0.25rem",
+            right: "calc(26px + 0.25rem + 0.5rem)",
+            height: "26px",
+            display: "flex",
+            gap: "0.5rem"
+          }}
+        >
+          {!localUser && onKick && (
+            <ButtonWithToolTip
+              onClick={() => onKick(trackRef.participant.identity)}
+              icon={<LeaveIcon />}
+              text={"Kick from Room"}
+            />
+          )}
+
+          {!localUser && audioTrack && !audioTrack.isMuted && onMute && (
+            <ButtonWithToolTip
+              onClick={() => onMute(trackRef.participant.identity, audioTrack.trackSid)}
+              icon={<MicIcon />}
+              text={"Mute Audio"}
+            />
+          )}
+
+          {!localUser && videoTrack && !videoTrack.isMuted && onMute && (
+            <ButtonWithToolTip
+              onClick={() => onMute(trackRef.participant.identity, videoTrack.trackSid)}
+              icon={<CamIcon />}
+              text={"Disable Video"}
+            />
+          )}
+        </div>
         <FocusToggle trackSource={trackRef.source} />
+
       </ParticipantContextIfNeeded>
     </div>
   );
-}
+};

@@ -1,11 +1,11 @@
 {
-  "name": "@livekit/components-react",
+  "name": "@dtelecom/components-react",
   "version": "1.0.8",
   "license": "Apache-2.0",
-  "author": "LiveKit",
+  "author": "dTelecom",
   "repository": {
     "type": "git",
-    "url": "https://github.com/livekit/components-js.git",
+    "url": "https://github.com/dTelecom/components-js.git",
     "directory": "/packages/react"
   },
   "exports": {
