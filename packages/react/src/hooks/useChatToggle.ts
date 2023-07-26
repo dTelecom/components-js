@@ -20,7 +20,7 @@ export function useChatToggle({ props }: UseChatToggleProps) {
         if (dispatch) dispatch({ msg: 'toggle_chat' });
       },
       'aria-pressed': state?.showChat ? 'true' : 'false',
-      'data-lk-unread-msgs': state
+      'data-lk-unread-msgs': state && state.unreadMessages !== undefined
         ? state.unreadMessages < 10
           ? state.unreadMessages.toFixed(0)
           : '9+'
