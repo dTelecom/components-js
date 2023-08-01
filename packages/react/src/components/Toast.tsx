@@ -1,5 +1,5 @@
-import type { Room } from 'livekit-client';
-import { ConnectionState } from 'livekit-client';
+import type { Room } from '@dtelecom/livekit-client';
+import { ConnectionState } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { SpinnerIcon } from '../assets/icons';
 import { mergeProps } from '../utils';

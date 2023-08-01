@@ -1,5 +1,5 @@
-import { setupDisconnectButton } from '@livekit/components-core';
-import { ConnectionState } from 'livekit-client';
+import { setupDisconnectButton } from '@dtelecom/components-core';
+import { ConnectionState } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import type { DisconnectButtonProps } from '../components';
 import { useRoomContext } from '../context';

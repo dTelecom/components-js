@@ -1,7 +1,7 @@
-import type { ParticipantClickEvent } from '@livekit/components-core';
-import { setupParticipantTile } from '@livekit/components-core';
-import type { TrackPublication, Participant } from 'livekit-client';
-import { Track } from 'livekit-client';
+import type { ParticipantClickEvent } from '@dtelecom/components-core';
+import { setupParticipantTile } from '@dtelecom/components-core';
+import type { TrackPublication, Participant } from '@dtelecom/livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useEnsureParticipant } from '../context';
 import { mergeProps } from '../mergeProps';

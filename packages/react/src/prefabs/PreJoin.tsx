@@ -3,7 +3,7 @@ import type {
   LocalAudioTrack,
   LocalTrack,
   LocalVideoTrack,
-} from 'livekit-client';
+} from '@dtelecom/livekit-client';
 import {
   createLocalAudioTrack,
   createLocalTracks,
@@ -11,11 +11,11 @@ import {
   facingModeFromLocalTrack,
   Track,
   VideoPresets,
-} from 'livekit-client';
+} from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 import { TrackToggle } from '../components/controls/TrackToggle';
-import { log } from '@livekit/components-core';
+import { log } from '@dtelecom/components-core';
 import { ParticipantPlaceholder } from '../assets/images';
 import { useMediaDevices } from '../hooks';
 

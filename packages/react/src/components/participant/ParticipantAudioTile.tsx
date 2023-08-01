@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Track } from 'livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 
 import { ConnectionQualityIndicator } from './ConnectionQualityIndicator';
 import { ParticipantName } from './ParticipantName';

@@ -5,8 +5,8 @@ import type {
   Room,
   Track,
   TrackPublication,
-} from 'livekit-client';
-import { RoomEvent, TrackEvent } from 'livekit-client';
+} from '@dtelecom/livekit-client';
+import { RoomEvent, TrackEvent } from '@dtelecom/livekit-client';
 import { map, Observable, startWith } from 'rxjs';
 import { allParticipantRoomEvents } from '../helper';
 import { log } from '../logger';

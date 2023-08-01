@@ -4,8 +4,8 @@ import type {
   RoomOptions,
   ScreenShareCaptureOptions,
   VideoCaptureOptions,
-} from 'livekit-client';
-import type { MediaDeviceFailure, Room } from 'livekit-client';
+} from '@dtelecom/livekit-client';
+import type { MediaDeviceFailure, Room } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { RoomContext } from '../context';
 import { useLiveKitRoom } from '../hooks';

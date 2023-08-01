@@ -1,5 +1,5 @@
-import type { DataSendOptions, ReceivedDataMessage } from '@livekit/components-core';
-import { setupDataMessageHandler } from '@livekit/components-core';
+import type { DataSendOptions, ReceivedDataMessage } from '@dtelecom/components-core';
+import { setupDataMessageHandler } from '@dtelecom/components-core';
 import * as React from 'react';
 import { useRoomContext } from '../context';
 import { useObservableState } from './internal';

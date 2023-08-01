@@ -1,4 +1,4 @@
-import { log } from '@livekit/components-core';
+import { log } from '@dtelecom/components-core';
 import * as React from 'react';
 
 /** @public */

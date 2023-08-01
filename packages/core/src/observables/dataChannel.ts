@@ -1,5 +1,5 @@
-import type { LocalParticipant, Participant, Room } from 'livekit-client';
-import { DataPacket_Kind } from 'livekit-client';
+import type { LocalParticipant, Participant, Room } from '@dtelecom/livekit-client';
+import { DataPacket_Kind } from '@dtelecom/livekit-client';
 import type { Subscriber } from 'rxjs';
 import { Observable, filter, map } from 'rxjs';
 import { createDataObserver } from './room';

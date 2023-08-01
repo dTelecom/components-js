@@ -1,5 +1,5 @@
-import { setupFocusToggle, isTrackReferencePinned } from '@livekit/components-core';
-import type { Track, Participant } from 'livekit-client';
+import { setupFocusToggle, isTrackReferencePinned } from '@dtelecom/components-core';
+import type { Track, Participant } from '@dtelecom/livekit-client';
 import { useEnsureParticipant, useMaybeLayoutContext } from '../context';
 import { mergeProps } from '../mergeProps';
 import * as React from 'react';

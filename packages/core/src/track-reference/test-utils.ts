@@ -4,7 +4,7 @@
  * @internal
  */
 
-import { Participant, Track, TrackPublication } from 'livekit-client';
+import { Participant, Track, TrackPublication } from '@dtelecom/livekit-client';
 import type { UpdatableItem } from '../sorting/tile-array-update';
 import type { TrackReference, TrackReferencePlaceholder } from './track-reference.types';
 import { getTrackReferenceId } from './track-reference.utils';

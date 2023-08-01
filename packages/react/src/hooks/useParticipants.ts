@@ -1,4 +1,4 @@
-import type { Room, RoomEvent } from 'livekit-client';
+import type { Room, RoomEvent } from '@dtelecom/livekit-client';
 import { useLocalParticipant } from './useLocalParticipant';
 import { useRemoteParticipants } from './useRemoteParticipants';
 

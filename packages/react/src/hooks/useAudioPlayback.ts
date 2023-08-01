@@ -1,7 +1,7 @@
-import type { Room } from 'livekit-client';
+import type { Room } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useObservableState } from './internal';
-import { roomAudioPlaybackAllowedObservable } from '@livekit/components-core';
+import { roomAudioPlaybackAllowedObservable } from '@dtelecom/components-core';
 import { useEnsureRoom } from '../context';
 
 /**

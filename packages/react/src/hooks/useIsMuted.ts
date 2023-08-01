@@ -1,5 +1,5 @@
-import { mutedObserver } from '@livekit/components-core';
-import type { Participant, Track } from 'livekit-client';
+import { mutedObserver } from '@dtelecom/components-core';
+import type { Participant, Track } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useEnsureParticipant } from '../context';
 

@@ -1,5 +1,5 @@
-import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
-import { getScrollBarWidth } from '@livekit/components-core';
+import type { TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
+import { getScrollBarWidth } from '@dtelecom/components-core';
 import * as React from 'react';
 import { useSize } from '../../hooks/internal';
 import { useVisualStableUpdate } from '../../hooks';

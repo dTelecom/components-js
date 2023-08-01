@@ -1,4 +1,4 @@
-import { Track } from 'livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import type { TrackReferenceOrPlaceholder } from '../track-reference';
 import { isTrackReference } from '../track-reference';
 import {

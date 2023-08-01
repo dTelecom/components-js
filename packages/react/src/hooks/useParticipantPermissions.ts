@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { Participant } from 'livekit-client';
-import { participantPermissionObserver } from '@livekit/components-core';
+import type { Participant } from '@dtelecom/livekit-client';
+import { participantPermissionObserver } from '@dtelecom/components-core';
 import { useEnsureParticipant } from '../context';
 import { useObservableState } from './internal/useObservableState';
 

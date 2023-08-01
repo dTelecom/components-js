@@ -1,8 +1,8 @@
 import type { Subscriber, Subscription } from 'rxjs';
 import { Subject, map, Observable, startWith, finalize, filter, concat } from 'rxjs';
-import type { Participant, TrackPublication } from 'livekit-client';
-import { Room, RoomEvent, Track } from 'livekit-client';
-import type { RoomEventCallbacks } from 'livekit-client/dist/src/room/Room';
+import type { Participant, TrackPublication } from '@dtelecom/livekit-client';
+import { Room, RoomEvent, Track } from '@dtelecom/livekit-client';
+import type { RoomEventCallbacks } from '@dtelecom/livekit-client/dist/src/room/Room';
 import { log } from '../logger';
 export function observeRoomEvents(room: Room, ...events: RoomEvent[]): Observable<Room> {
   const observable = new Observable<Room>((subscribe) => {

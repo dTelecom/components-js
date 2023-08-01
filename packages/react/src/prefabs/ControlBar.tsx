@@ -1,4 +1,4 @@
-import { Track } from 'livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 import { DisconnectButton } from '../components/controls/DisconnectButton';
@@ -9,7 +9,7 @@ import { ChatToggle } from '../components/controls/ChatToggle';
 import { useLocalParticipantPermissions } from '../hooks';
 import { useMediaQuery } from '../hooks/internal';
 import { useMaybeLayoutContext } from '../context';
-import { isMobileBrowser } from '@livekit/components-core';
+import { isMobileBrowser } from '@dtelecom/components-core';
 
 /** @public */
 export type ControlBarControls = {

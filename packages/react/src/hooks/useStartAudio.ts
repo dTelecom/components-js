@@ -1,5 +1,5 @@
-import { setupStartAudio } from '@livekit/components-core';
-import type { Room } from 'livekit-client';
+import { setupStartAudio } from '@dtelecom/components-core';
+import type { Room } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useEnsureRoom } from '../context';
 import { mergeProps } from '../mergeProps';

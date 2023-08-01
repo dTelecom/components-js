@@ -1,4 +1,4 @@
-import type { Room } from 'livekit-client';
+import type { Room } from '@dtelecom/livekit-client';
 import * as React from 'react';
 
 /** @public */

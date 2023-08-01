@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { UseParticipantsOptions } from '../../hooks';
 import { useGridLayout, usePagination, useSwipe } from '../../hooks';
 import { mergeProps } from '../../utils';
-import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
+import type { TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
 import { TrackLoop } from '../TrackLoop';
 import { PaginationControl } from '../controls/PaginationControl';
 import { PaginationIndicator } from '../controls/PaginationIndicator';

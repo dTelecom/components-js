@@ -1,11 +1,10 @@
 {
-  "name": "@livekit/components-core",
-  "version": "0.6.11",
+  "name": "@dtelecom/components-core",
+  "version": "0.6.14",
   "license": "Apache-2.0",
-  "author": "LiveKit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/livekit/components-js.git",
+    "url": "https://github.com/dTelecom/components-js.git",
     "directory": "/packages/core"
   },
   "exports": {
@@ -40,10 +39,10 @@
     "rxjs": "^7.8.0"
   },
   "peerDependencies": {
-    "livekit-client": "^1.12.0"
+    "@dtelecom/livekit-client": "1.12.5"
   },
   "devDependencies": {
-    "@livekit/components-styles": "~1.0.4",
+    "@dtelecom/components-styles": "~1.0.5",
     "@size-limit/file": "^8.2.4",
     "@size-limit/webpack": "^8.2.4",
     "eslint-config-lk-custom": "^0.1.1",

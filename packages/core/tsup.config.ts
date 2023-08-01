@@ -4,5 +4,5 @@ import defaults from '../../tsup.config';
 
 export default defineConfig({
   ...defaults,
-  external: ['livekit-client'],
+  external: ['@dtelecom/livekit-client'],
 });

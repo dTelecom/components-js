@@ -1,4 +1,4 @@
-import { Track } from 'livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import { map, startWith } from 'rxjs';
 import { observeParticipantMedia } from '../observables/participant';
 import { prefixClass } from '../styles-interface';

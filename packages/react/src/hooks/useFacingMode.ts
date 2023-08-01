@@ -1,5 +1,5 @@
-import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
-import { LocalTrackPublication, facingModeFromLocalTrack } from 'livekit-client';
+import type { TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
+import { LocalTrackPublication, facingModeFromLocalTrack } from '@dtelecom/livekit-client';
 
 /**
  * Try to determine the `facingMode` of a local participant video track.

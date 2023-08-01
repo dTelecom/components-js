@@ -1,4 +1,4 @@
-import type { Participant, Track } from 'livekit-client';
+import type { Participant, Track } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { LayoutContext } from '../../context';
 import { FocusToggleIcon, UnfocusToggleIcon } from '../../assets/icons';

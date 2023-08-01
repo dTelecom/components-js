@@ -3,7 +3,7 @@
  *
  */
 
-import type { Participant, Track, TrackPublication } from 'livekit-client';
+import type { Participant, Track, TrackPublication } from '@dtelecom/livekit-client';
 // ## TrackReference Types
 
 export type TrackReferencePlaceholder = {

@@ -1,4 +1,4 @@
-import type { Track } from 'livekit-client';
+import type { Track } from '@dtelecom/livekit-client';
 import type { PinState } from '../types';
 import type { TrackReferenceOrPlaceholder } from './track-reference.types';
 import { isTrackReference, isTrackReferencePlaceholder } from './track-reference.types';

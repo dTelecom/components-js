@@ -1,4 +1,4 @@
-import { activeSpeakerObserver } from '@livekit/components-core';
+import { activeSpeakerObserver } from '@dtelecom/components-core';
 import * as React from 'react';
 import { useRoomContext } from '../context';
 import { useObservableState } from './internal';

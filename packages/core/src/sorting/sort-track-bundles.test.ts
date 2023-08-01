@@ -1,4 +1,4 @@
-import { Track } from 'livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import { describe, test, expect } from 'vitest';
 import {
   flatTrackReferenceArray,

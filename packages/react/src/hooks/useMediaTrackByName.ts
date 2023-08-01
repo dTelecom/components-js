@@ -1,4 +1,4 @@
-import type { Participant } from 'livekit-client';
+import type { Participant } from '@dtelecom/livekit-client';
 import { useEnsureParticipant } from '../context';
 import type { UseMediaTrackOptions } from './useMediaTrack';
 import { useMediaTrackBySourceOrName } from './useMediaTrackBySourceOrName';

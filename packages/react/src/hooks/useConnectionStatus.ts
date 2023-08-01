@@ -1,5 +1,5 @@
-import { connectionStateObserver } from '@livekit/components-core';
-import type { Room } from 'livekit-client';
+import { connectionStateObserver } from '@dtelecom/components-core';
+import type { Room } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useEnsureRoom } from '../context';
 import { useObservableState } from './internal';

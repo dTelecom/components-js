@@ -1,4 +1,4 @@
-import { ParticipantEvent, RoomEvent } from 'livekit-client';
+import { ParticipantEvent, RoomEvent } from '@dtelecom/livekit-client';
 
 export const allRemoteParticipantRoomEvents = [
   RoomEvent.ConnectionStateChanged,

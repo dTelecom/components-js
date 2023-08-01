@@ -1,4 +1,4 @@
-import type { PinState, TrackReference } from '@livekit/components-core';
+import type { PinState, TrackReference } from '@dtelecom/components-core';
 import type * as React from 'react';
 
 /** @internal */

@@ -1,7 +1,7 @@
 import { describe, test, expect, expectTypeOf } from 'vitest';
 import { mockTrackReferenceSubscribed } from './test-utils';
-import type { Participant, TrackPublication } from 'livekit-client';
-import { Track } from 'livekit-client';
+import type { Participant, TrackPublication } from '@dtelecom/livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 
 describe('Test mocking functions ', () => {
   test('mockTrackReferenceSubscribed without options.', () => {

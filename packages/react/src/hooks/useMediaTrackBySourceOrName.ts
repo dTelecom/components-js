@@ -1,6 +1,6 @@
-import type { TrackIdentifier } from '@livekit/components-core';
-import { isTrackReference } from '@livekit/components-core';
-import { setupMediaTrack, log, isLocal, getTrackByIdentifier } from '@livekit/components-core';
+import type { TrackIdentifier } from '@dtelecom/components-core';
+import { isTrackReference } from '@dtelecom/components-core';
+import { setupMediaTrack, log, isLocal, getTrackByIdentifier } from '@dtelecom/components-core';
 import * as React from 'react';
 import { mergeProps } from '../utils';
 import type { UseMediaTrackOptions } from './useMediaTrack';

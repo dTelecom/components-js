@@ -1,4 +1,4 @@
-import { Participant, Track, TrackPublication } from 'livekit-client';
+import { Participant, Track, TrackPublication } from '@dtelecom/livekit-client';
 import { describe, it, expect } from 'vitest';
 import { isTrackReferencePinned } from './track-reference';
 import type { PinState } from './types';

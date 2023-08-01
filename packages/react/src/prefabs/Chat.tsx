@@ -1,5 +1,5 @@
-import type { ChatMessage, ReceivedChatMessage } from '@livekit/components-core';
-import { setupChat } from '@livekit/components-core';
+import type { ChatMessage, ReceivedChatMessage } from '@dtelecom/components-core';
+import { setupChat } from '@dtelecom/components-core';
 import * as React from 'react';
 import { useMaybeLayoutContext, useRoomContext } from '../context';
 import { useObservableState } from '../hooks/internal/useObservableState';

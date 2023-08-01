@@ -1,9 +1,9 @@
-import type { Participant, Track, TrackPublication } from 'livekit-client';
+import type { Participant, Track, TrackPublication } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useMediaTrackBySourceOrName } from '../../hooks/useMediaTrackBySourceOrName';
-import { log } from '@livekit/components-core';
+import { log } from '@dtelecom/components-core';
 import { useEnsureParticipant } from '../../context';
-import { RemoteAudioTrack } from 'livekit-client';
+import { RemoteAudioTrack } from '@dtelecom/livekit-client';
 
 /** @public */
 export interface AudioTrackProps<T extends HTMLMediaElement = HTMLMediaElement>

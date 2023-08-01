@@ -4,15 +4,15 @@ import type {
   TrackReferenceOrPlaceholder,
   TrackSourceWithOptions,
   TrackReferencePlaceholder,
-} from '@livekit/components-core';
+} from '@dtelecom/components-core';
 import {
   isSourcesWithOptions,
   isSourceWitOptions,
   log,
   trackReferencesObservable,
-} from '@livekit/components-core';
-import type { Participant, Room, RoomEvent } from 'livekit-client';
-import { Track } from 'livekit-client';
+} from '@dtelecom/components-core';
+import type { Participant, Room, RoomEvent } from '@dtelecom/livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useEnsureRoom } from '../context';
 

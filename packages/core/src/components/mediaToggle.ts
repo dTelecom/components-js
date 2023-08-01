@@ -4,8 +4,8 @@ import type {
   Room,
   ScreenShareCaptureOptions,
   VideoCaptureOptions,
-} from 'livekit-client';
-import { Track } from 'livekit-client';
+} from '@dtelecom/livekit-client';
+import { Track } from '@dtelecom/livekit-client';
 import type { Observable } from 'rxjs';
 import { Subject, map, startWith } from 'rxjs';
 import { observeParticipantMedia } from '../observables/participant';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConnectionQuality, Track } from 'livekit-client';
+import { ConnectionQuality, Track } from '@dtelecom/livekit-client';
 
 import {
   MicIcon,

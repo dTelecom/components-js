@@ -1,5 +1,5 @@
-import type { Participant } from 'livekit-client';
-import { LocalParticipant } from 'livekit-client';
+import type { Participant } from '@dtelecom/livekit-client';
+import { LocalParticipant } from '@dtelecom/livekit-client';
 import {
   sortParticipantsByAudioLevel,
   sortParticipantsByIsSpeaking,

@@ -1,5 +1,5 @@
-import type { TrackReference, TrackReferenceOrPlaceholder } from '@livekit/components-core';
-import { isTrackReference } from '@livekit/components-core';
+import type { TrackReference, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
+import { isTrackReference } from '@dtelecom/components-core';
 import * as React from 'react';
 import { TrackContext } from '../context/track-context';
 import { cloneSingleChild } from '../utils';

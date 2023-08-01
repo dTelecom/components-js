@@ -1,5 +1,5 @@
-import { createIsSpeakingObserver } from '@livekit/components-core';
-import type { Participant } from 'livekit-client';
+import { createIsSpeakingObserver } from '@dtelecom/components-core';
+import type { Participant } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useEnsureParticipant } from '../context';
 import { useObservableState } from './internal';

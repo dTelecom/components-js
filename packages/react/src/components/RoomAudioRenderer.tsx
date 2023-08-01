@@ -1,5 +1,5 @@
-import { isLocal } from '@livekit/components-core';
-import { Track } from 'livekit-client';
+import { isLocal } from '@dtelecom/components-core';
+import { Track } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useTracks } from '../hooks';
 import { AudioTrack } from './participant/AudioTrack';

@@ -1,9 +1,9 @@
-import type { Participant, RemoteParticipant, Room, TrackPublication } from 'livekit-client';
-import { ParticipantEvent, RoomEvent, Track } from 'livekit-client';
+import type { Participant, RemoteParticipant, Room, TrackPublication } from '@dtelecom/livekit-client';
+import { ParticipantEvent, RoomEvent, Track } from '@dtelecom/livekit-client';
 import type { Subscriber } from 'rxjs';
 import { map, switchMap, Observable, startWith } from 'rxjs';
 import { observeRoomEvents } from './room';
-import type { ParticipantEventCallbacks } from 'livekit-client/dist/src/room/participant/Participant';
+import type { ParticipantEventCallbacks } from '@dtelecom/livekit-client/dist/src/room/participant/Participant';
 import { allParticipantEvents, allParticipantRoomEvents } from '../helper/eventGroups';
 import type { TrackIdentifier } from '../types';
 import { getTrackByIdentifier } from '../components/mediaTrack';

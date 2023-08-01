@@ -1,5 +1,5 @@
-import type { VideoSource, AudioSource } from '@livekit/components-core';
-import type { Participant } from 'livekit-client';
+import type { VideoSource, AudioSource } from '@dtelecom/components-core';
+import type { Participant } from '@dtelecom/livekit-client';
 import { useEnsureParticipant } from '../context/participant-context';
 import type * as React from 'react';
 import { useMediaTrackBySourceOrName } from './useMediaTrackBySourceOrName';

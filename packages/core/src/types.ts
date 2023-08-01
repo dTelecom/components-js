@@ -1,4 +1,4 @@
-import type { Participant, Track, TrackPublication } from 'livekit-client';
+import type { Participant, Track, TrackPublication } from '@dtelecom/livekit-client';
 import type { TrackReference, TrackReferenceOrPlaceholder } from './track-reference';
 
 // ## PinState Type

@@ -1,4 +1,4 @@
-import { setLogLevel as setClientSdkLogLevel } from 'livekit-client';
+import { setLogLevel as setClientSdkLogLevel } from '@dtelecom/livekit-client';
 import loglevel from 'loglevel';
 
 export const log = loglevel.getLogger('lk-components-js');

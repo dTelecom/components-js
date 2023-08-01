@@ -1,4 +1,4 @@
-import type { Room } from 'livekit-client';
+import type { Room } from '@dtelecom/livekit-client';
 import { log } from '../logger';
 import { roomAudioPlaybackAllowedObservable } from '../observables/room';
 import { prefixClass } from '../styles-interface';

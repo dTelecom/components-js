@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mergeProps } from '../../utils';
-import type { Participant, Track } from 'livekit-client';
+import type { Participant, Track } from '@dtelecom/livekit-client';
 import { getSourceIcon } from '../../assets/icons/util';
 import { useTrackMutedIndicator } from '../../hooks';
 

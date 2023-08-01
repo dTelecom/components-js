@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
-import type { Participant, Room } from 'livekit-client';
-import { DataPacket_Kind } from 'livekit-client';
+import type { Participant, Room } from '@dtelecom/livekit-client';
+import { DataPacket_Kind } from '@dtelecom/livekit-client';
 import { BehaviorSubject, Subject, scan, map, takeUntil } from 'rxjs';
 import { DataTopic, sendMessage, setupDataMessageHandler } from '../observables/dataChannel';
 

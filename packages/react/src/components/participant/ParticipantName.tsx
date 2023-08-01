@@ -1,4 +1,4 @@
-import { setupParticipantName } from '@livekit/components-core';
+import { setupParticipantName } from '@dtelecom/components-core';
 import * as React from 'react';
 import { useEnsureParticipant } from '../../context';
 import { useObservableState } from '../../hooks/internal/useObservableState';

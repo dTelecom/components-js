@@ -1,9 +1,9 @@
-import type { Participant } from 'livekit-client';
+import type { Participant } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { mergeProps } from '../../utils';
-import type { TrackReference, TrackReferenceOrPlaceholder } from '@livekit/components-core';
+import type { TrackReference, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
 import { ParticipantTile } from '../participant/ParticipantTile';
-import type { ParticipantClickEvent } from '@livekit/components-core';
+import type { ParticipantClickEvent } from '@dtelecom/components-core';
 
 /** @public */
 export interface FocusLayoutContainerProps extends React.HTMLAttributes<HTMLDivElement> {
