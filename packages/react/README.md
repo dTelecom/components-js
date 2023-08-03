@@ -2,36 +2,18 @@
 
 A LiveKit Components implementation in [React](https://reactjs.org/).
 
-<!--NAV_START-->
-
-## Monorepo Navigation
-
-- [Home](../../README.md)
-- **Docs**
-  - [Docs](../../docs/alpha-docs/README.md)
-  - [Storybook](../../docs/storybook/README.md)
-- **Framework Implementations**:
-  - [React 👈](../../packages/react/README.md)
-- **Examples**
-  - [Next.js](../../examples/nextjs/README.md)
-- **Internal Packages**
-  - [Core](../../packages/core/README.md)
-  - [Styles](../../packages/styles/README.md)
-
-<!--NAV_END-->
-
 ## Install
 
 ```bash
-yarn install @livekit/components-react
+yarn install @dtelecom/components-react
 ```
 
 ## Usage
 
 ```tsx
-import { LiveKitRoom } from '@livekit/components-react';
+import { LiveKitRoom } from '@dtelecom/components-react';
 
-<LiveKitRoom token="<livekit-token>" serverUrl="<url-to-livekit-server>" connect={true} />;
+<LiveKitRoom token="<token>" serverUrl="<url-to-server>" connect={true} />;
 ```
 
 ## Architecture Overview
