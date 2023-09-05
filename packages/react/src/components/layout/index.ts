@@ -2,5 +2,9 @@ export * from './FocusLayout';
 export * from './GridLayout';
 export {
   CarouselLayout as CarouselView,
-  CarouselLayoutProps as CarouselViewProps,
 } from './CarouselLayout';
+import type {CarouselLayoutProps} from './CarouselLayout';
+
+export type {
+  CarouselLayoutProps as CarouselViewProps,
+};
