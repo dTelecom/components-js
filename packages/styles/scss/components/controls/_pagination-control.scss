@@ -11,6 +11,7 @@
   opacity: 0;
 
   &:hover {
+    z-index: 1;
     opacity: 1;
   }
 
