@@ -4,17 +4,18 @@ import {RoomAudioRenderer} from '../components/RoomAudioRenderer';
 import {ControlBar} from './ControlBar';
 import {FocusLayout, FocusLayoutContainer} from '../components/layout/FocusLayout';
 import {GridLayout} from '../components/layout/GridLayout';
-import type {WidgetState} from '@dtelecom/components-core';
+import type { GridLayoutDefinition, TrackReferenceOrPlaceholder, WidgetState } from '@dtelecom/components-core';
 import {isEqualTrackRef, isTrackReference, log} from '@dtelecom/components-core';
 import {Chat} from './Chat';
 import {ConnectionStateToast} from '../components/Toast';
 import type {MessageFormatter} from '../components/ChatEntry';
-import {RoomEvent, Track} from '@dtelecom/livekit-client';
+import { RemoteTrackPublication, RoomEvent, Track, VideoQuality } from '@dtelecom/livekit-client';
 import {useTracks} from '../hooks/useTracks';
 import {usePinnedTracks} from '../hooks/usePinnedTracks';
 import {CarouselLayout} from '../components/layout/CarouselLayout';
 import {useCreateLayoutContext} from '../context/layout-context';
 import {ParticipantTile} from '../components';
+import { useCallback } from 'react';
 
 /**
  * @public
@@ -25,6 +26,7 @@ export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElemen
   onMute?: (identity: string, trackSid: string, type?: 'audio' | 'video') => void;
   isAdmin?: boolean;
   localIdentity?: string;
+  gridLayouts?: GridLayoutDefinition[];
 }
 
 
@@ -51,6 +53,7 @@ export function VideoConference(
     onMute,
     isAdmin,
     localIdentity,
+    gridLayouts,
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
@@ -79,24 +82,59 @@ export function VideoConference(
 
   const focusTrack = usePinnedTracks(layoutContext)?.[0];
   const carouselTracks = tracks.filter((track) => !isEqualTrackRef(track, focusTrack));
+  const tracksWithTrackReference = tracks.filter(isTrackReference);
+
+  const pickTrackQuality = useCallback(() => {
+    if (focusTrack) {
+      return VideoQuality.LOW;
+    } else {
+      if (tracksWithTrackReference.length > 6) {
+        return VideoQuality.LOW;
+      }
+      if (tracksWithTrackReference.length > 3) {
+        return VideoQuality.MEDIUM;
+      }
+
+      return VideoQuality.HIGH;
+    }
+  }, [tracksWithTrackReference.length]);
 
   React.useEffect(() => {
     // if screen share tracks are published, and no pin is set explicitly, auto set the screen share
     if (screenShareTracks.length > 0 && focusTrack === undefined) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      layoutContext.pin.dispatch?.({msg: "set_pin", trackReference: screenShareTracks[0]});
+      layoutContext.pin.dispatch?.({ msg: "set_pin", trackReference: screenShareTracks[0] });
     } else if (
       (screenShareTracks.length === 0 && focusTrack?.source === Track.Source.ScreenShare) ||
       tracks.length <= 1
     ) {
-      layoutContext.pin.dispatch?.({msg: "clear_pin"});
+      layoutContext.pin.dispatch?.({ msg: "clear_pin" });
     }
+
+    updateTracksQuality();
   }, [
     JSON.stringify(screenShareTracks.map((ref) => ref.publication.trackSid)),
-    tracks.length,
+    tracksWithTrackReference.length,
     focusTrack?.publication?.trackSid
   ]);
+
+  const updateTracksQuality = () => {
+    let tracksToUpdate: TrackReferenceOrPlaceholder[] = tracksWithTrackReference;
+    if (focusTrack) {
+      tracksToUpdate = carouselTracks;
+      if (focusTrack.publication instanceof RemoteTrackPublication) {
+        focusTrack.publication.setVideoQuality(VideoQuality.HIGH);
+      }
+    }
+
+    tracksToUpdate.forEach(t => {
+      if (t.publication instanceof RemoteTrackPublication) {
+        const quality = pickTrackQuality();
+        t.publication.setVideoQuality(quality);
+      }
+    });
+  }
 
   return (
     <div className="lk-video-conference" {...props}>
@@ -108,7 +146,10 @@ export function VideoConference(
         <div className="lk-video-conference-inner">
           {!focusTrack ? (
             <div className="lk-grid-layout-wrapper">
-              <GridLayout tracks={tracks}>
+              <GridLayout
+                tracks={tracks}
+                gridLayouts={gridLayouts}
+              >
                 <ParticipantTile
                   onKick={onKick}
                   onMute={onMute}

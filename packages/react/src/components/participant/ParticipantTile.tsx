@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import type { Participant, TrackPublication } from '@dtelecom/livekit-client';
 import { Track } from '@dtelecom/livekit-client';
 import type { ParticipantClickEvent, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
@@ -82,6 +83,24 @@ export const ParticipantTile = ({
     source,
     publication
   };
+  const [bitrate, setBitrate] = useState<number>();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let total = 0;
+
+      [...p.videoTracks.values()].forEach((pub) => {
+        if (pub.track?.currentBitrate) {
+          total += pub.track.currentBitrate;
+        }
+      });
+      setBitrate(total);
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
     participant: trackRef.participant,
@@ -193,6 +212,10 @@ export const ParticipantTile = ({
               icon={<CamIcon />}
               text={"Disable Video"}
             />
+          )}
+
+          {process.env.NODE_ENV === 'development' && bitrate !== undefined && (
+            <div>{Math.round(bitrate / 1024)} kbps</div>
           )}
         </div>
         <FocusToggle trackSource={trackRef.source} />
