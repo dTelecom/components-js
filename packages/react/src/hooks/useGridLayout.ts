@@ -16,13 +16,14 @@ export function useGridLayout(
   gridElement: React.RefObject<HTMLDivElement>,
   /** Count of tracks that should get layed out */
   trackCount: number,
+  gridLayouts: GridLayoutDefinition[] = GRID_LAYOUTS,
 ): { layout: GridLayoutDefinition } {
   const { width, height } = useSize(gridElement);
 
   const layout =
     width > 0 && height > 0
-      ? selectGridLayout(GRID_LAYOUTS, trackCount, width, height)
-      : GRID_LAYOUTS[0];
+      ? selectGridLayout(gridLayouts, trackCount, width, height)
+      : gridLayouts[0];
 
   React.useEffect(() => {
     if (gridElement.current && layout) {

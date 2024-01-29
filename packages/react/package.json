@@ -1,6 +1,6 @@
 {
   "name": "@dtelecom/components-react",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "license": "Apache-2.0",
   "author": "dTelecom",
   "repository": {
@@ -52,7 +52,7 @@
     "clsx": "^1.2.1"
   },
   "peerDependencies": {
-    "@dtelecom/livekit-client": "^1.12.8",
+    "@dtelecom/livekit-client": "^1.12.9",
     "react": ">=18",
     "react-dom": ">=18"
   },

@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { UseParticipantsOptions } from '../../hooks';
 import { useGridLayout, usePagination, useSwipe } from '../../hooks';
 import { mergeProps } from '../../utils';
-import type { TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
+import type {GridLayoutDefinition, TrackReferenceOrPlaceholder} from '@dtelecom/components-core';
 import { TrackLoop } from '../TrackLoop';
 import { PaginationControl } from '../controls/PaginationControl';
 import { PaginationIndicator } from '../controls/PaginationIndicator';
@@ -13,6 +13,7 @@ export interface GridLayoutProps
     Pick<UseParticipantsOptions, 'updateOnlyOn'> {
   children: React.ReactNode;
   tracks: TrackReferenceOrPlaceholder[];
+  gridLayouts?: GridLayoutDefinition[];
 }
 
 /**
@@ -28,14 +29,14 @@ export interface GridLayoutProps
  * ```
  * @public
  */
-export function GridLayout({ tracks, ...props }: GridLayoutProps) {
+export function GridLayout({ tracks, gridLayouts, ...props }: GridLayoutProps) {
   const gridEl = React.createRef<HTMLDivElement>();
 
   const elementProps = React.useMemo(
     () => mergeProps(props, { className: 'lk-grid-layout' }),
     [props],
   );
-  const { layout } = useGridLayout(gridEl, tracks.length);
+  const { layout } = useGridLayout(gridEl, tracks.length, gridLayouts);
   const pagination = usePagination(layout.maxTiles, tracks);
 
   useSwipe(gridEl, {
