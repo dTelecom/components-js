@@ -15,7 +15,6 @@ import {usePinnedTracks} from '../hooks/usePinnedTracks';
 import {CarouselLayout} from '../components/layout/CarouselLayout';
 import {useCreateLayoutContext} from '../context/layout-context';
 import {ParticipantTile} from '../components';
-import { useCallback } from 'react';
 
 /**
  * @public
@@ -83,21 +82,22 @@ export function VideoConference(
   const focusTrack = usePinnedTracks(layoutContext)?.[0];
   const carouselTracks = tracks.filter((track) => !isEqualTrackRef(track, focusTrack));
   const tracksWithTrackReference = tracks.filter(isTrackReference);
+  const enabledVisibleTracks = tracksWithTrackReference.filter((t) => t.publication.isEnabled && t.publication.track?.attachedElements[0])
 
-  const pickTrackQuality = useCallback(() => {
+  const pickTrackQuality = () => {
     if (focusTrack) {
       return VideoQuality.LOW;
     } else {
-      if (tracksWithTrackReference.length > 6) {
+      if (enabledVisibleTracks.length > 6) {
         return VideoQuality.LOW;
       }
-      if (tracksWithTrackReference.length > 3) {
+      if (enabledVisibleTracks.length > 3) {
         return VideoQuality.MEDIUM;
       }
 
       return VideoQuality.HIGH;
     }
-  }, [tracksWithTrackReference.length]);
+  }
 
   React.useEffect(() => {
     // if screen share tracks are published, and no pin is set explicitly, auto set the screen share
@@ -115,6 +115,7 @@ export function VideoConference(
     updateTracksQuality();
   }, [
     JSON.stringify(screenShareTracks.map((ref) => ref.publication.trackSid)),
+    JSON.stringify(enabledVisibleTracks.map((ref) => ref.publication.trackSid)),
     tracksWithTrackReference.length,
     focusTrack?.publication?.trackSid
   ]);
