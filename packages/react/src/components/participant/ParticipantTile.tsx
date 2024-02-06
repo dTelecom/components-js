@@ -84,6 +84,7 @@ export const ParticipantTile = ({
     publication
   };
   const [bitrate, setBitrate] = useState<number>();
+  const [focused, setFocused] = useState<boolean>(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -133,7 +134,19 @@ export const ParticipantTile = ({
   const localUser = trackRef.participant.identity === localIdentity;
 
   return (
-    <div style={{ position: "relative" }} {...elementProps}>
+    <div
+      onMouseEnter={() => setFocused(true)}
+      onMouseLeave={() => setFocused(false)}
+      style={{ position: "relative" }}
+      {...elementProps}
+      onClick={(e) => {
+        if (elementProps.onClick) {
+          elementProps.onClick(e);
+        }
+        setFocused(prev => !prev);
+      }}
+      className={elementProps.className + (focused ? ' lk-focused' : '')}
+    >
       <ParticipantContextIfNeeded participant={trackRef.participant}>
         {children ?? (
           <>

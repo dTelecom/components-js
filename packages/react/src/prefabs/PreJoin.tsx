@@ -235,8 +235,8 @@ export function PreJoin({
 
   const tracks = usePreviewTracks(
     {
-      audio: audioEnabled ? { deviceId: initialAudioDeviceId } : false,
-      video: videoEnabled ? { deviceId: initialVideoDeviceId } : false,
+      audio: audioEnabled ? initialAudioDeviceId === DEFAULT_USER_CHOICES.audioDeviceId ? true : { deviceId: initialAudioDeviceId } : false,
+      video: videoEnabled ? initialVideoDeviceId === DEFAULT_USER_CHOICES.videoDeviceId ? true :{ deviceId: initialVideoDeviceId } : false,
     },
     onError,
   );

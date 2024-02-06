@@ -1,7 +1,7 @@
 import * as React from 'react';
 import SvgChevron from '../../assets/icons/Chevron';
 import type { usePagination } from '../../hooks';
-import { createInteractingObservable } from '@dtelecom/components-core';
+import { createInteractingObservable, isMobileBrowser } from '@dtelecom/components-core';
 
 export interface PaginationControlProps
   extends Pick<
@@ -36,6 +36,10 @@ export function PaginationControl({
       }
     };
   }, [connectedElement]);
+
+  const isMobile = React.useMemo(() => isMobileBrowser(), []);
+
+  if (isMobile) return null;
 
   return (
     <div className="lk-pagination-control" data-lk-user-interaction={interactive}>

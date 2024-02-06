@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useSize } from '../../hooks/internal';
 import { useVisualStableUpdate } from '../../hooks';
 import { TrackLoop } from '../TrackLoop';
+import { GridLayout } from './GridLayout';
 
 const MIN_HEIGHT = 130;
 const MIN_WIDTH = 140;
@@ -79,7 +80,25 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
 
   return (
     <aside key={carouselOrientation} className="lk-carousel" ref={asideEl} {...props}>
-      <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
+      {carouselOrientation === 'vertical' ? (
+        <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
+      ) : (
+        <GridLayout
+          tracks={tracks}
+          gridLayouts={[  {
+            columns: 3,
+            rows: 1,
+            name: "1x3",
+            minTiles: 1,
+            maxTiles: 3,
+            minWidth: 0,
+            minHeight: 0,
+          }]}
+          style={{width: '100%'}}
+        >
+          {props.children}
+        </GridLayout>
+      )}
     </aside>
   );
 }
