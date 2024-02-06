@@ -9,9 +9,9 @@
   border-radius: var(--lk-border-radius);
   transition: opacity ease-in-out 0.15s;
   opacity: 0;
+  z-index: 1;
 
   &:hover {
-    z-index: 1;
     opacity: 1;
   }
 
