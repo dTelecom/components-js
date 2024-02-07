@@ -1,6 +1,7 @@
 import type { TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
 import { getScrollBarWidth } from '@dtelecom/components-core';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useSize } from '../../hooks/internal';
 import { useVisualStableUpdate } from '../../hooks';
 import { TrackLoop } from '../TrackLoop';
@@ -11,6 +12,27 @@ const MIN_WIDTH = 140;
 const MIN_VISIBLE_TILES = 1;
 const ASPECT_RATIO = 16 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
+
+const CAROUSEL_GRID_LAYOUTS = [
+  {
+    columns: 2,
+    rows: 1,
+    name: "1x2",
+    minTiles: 1,
+    maxTiles: 3,
+    minWidth: 0,
+    minHeight: 0,
+  },
+  {
+    columns: 3,
+    rows: 1,
+    name: "1x3",
+    minTiles: 1,
+    maxTiles: 3,
+    minWidth: 0,
+    minHeight: 0,
+  }
+];
 
 /** @public */
 export interface CarouselLayoutProps extends React.HTMLAttributes<HTMLMediaElement> {
@@ -44,12 +66,18 @@ export const CarouselView = CarouselLayout;
 export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayoutProps) {
   const asideEl = React.useRef<HTMLDivElement>(null);
   const [prevTiles, setPrevTiles] = React.useState(0);
+  const [carouselOrientation, setCarouselOrientation] = useState(orientation ? orientation : window.innerWidth > 600 ? 'vertical' : 'horizontal');
   const { width, height } = useSize(asideEl);
-  const carouselOrientation = orientation
-    ? orientation
-    : height >= width
-    ? 'vertical'
-    : 'horizontal';
+
+  useEffect(() => {
+    const resizeListener = () => setCarouselOrientation(window.innerWidth > 600 ? 'vertical' : 'horizontal');
+    window.addEventListener("resize", resizeListener);
+
+    resizeListener();
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
 
   const tileSpan =
     carouselOrientation === 'vertical'
@@ -79,22 +107,17 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   }, [maxVisibleTiles, carouselOrientation]);
 
   return (
-    <aside key={carouselOrientation} className="lk-carousel" ref={asideEl} {...props}>
+    <aside
+      key={carouselOrientation}
+      className="lk-carousel"
+      ref={asideEl} {...props}>
       {carouselOrientation === 'vertical' ? (
         <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
       ) : (
         <GridLayout
           tracks={tracks}
-          gridLayouts={[  {
-            columns: 3,
-            rows: 1,
-            name: "1x3",
-            minTiles: 1,
-            maxTiles: 3,
-            minWidth: 0,
-            minHeight: 0,
-          }]}
-          style={{width: '100%'}}
+          gridLayouts={CAROUSEL_GRID_LAYOUTS}
+          style={{ width: '100%' }}
         >
           {props.children}
         </GridLayout>

@@ -39,10 +39,10 @@
     "rxjs": "^7.8.0"
   },
   "peerDependencies": {
-    "@dtelecom/livekit-client": "^1.12.8"
+    "@dtelecom/livekit-client": "^1.12.12"
   },
   "devDependencies": {
-    "@dtelecom/components-styles": "~1.0.5",
+    "@dtelecom/components-styles": "~1.0.9",
     "@size-limit/file": "^8.2.4",
     "@size-limit/webpack": "^8.2.4",
     "eslint-config-lk-custom": "^0.1.1",

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Participant, TrackPublication } from '@dtelecom/livekit-client';
 import { Track } from '@dtelecom/livekit-client';
 import type { ParticipantClickEvent, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
@@ -85,6 +85,15 @@ export const ParticipantTile = ({
   };
   const [bitrate, setBitrate] = useState<number>();
   const [focused, setFocused] = useState<boolean>(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  const removeFocus = () => {
+    if (!timeoutRef.current) {
+      timeoutRef.current = setTimeout(() => {
+        setFocused(false);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -100,6 +109,7 @@ export const ParticipantTile = ({
 
     return () => {
       clearInterval(interval);
+      clearTimeout(timeoutRef.current);
     };
   }, []);
 
@@ -143,7 +153,8 @@ export const ParticipantTile = ({
         if (elementProps.onClick) {
           elementProps.onClick(e);
         }
-        setFocused(prev => !prev);
+        setFocused(true);
+        removeFocus();
       }}
       className={elementProps.className + (focused ? ' lk-focused' : '')}
     >
@@ -200,7 +211,8 @@ export const ParticipantTile = ({
             right: "calc(26px + 0.25rem + 0.5rem)",
             height: "26px",
             display: "flex",
-            gap: "0.5rem"
+            gap: "0.5rem",
+            zIndex: "1"
           }}
         >
           {!localUser && onKick && (
