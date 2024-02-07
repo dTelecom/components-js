@@ -40,10 +40,10 @@
     transition-delay: 0.2s;
   }
 
-  &:hover .focus-toggle-button,
-  &:focus .focus-toggle-button {
+  &.focused .focus-toggle-button {
     opacity: 1;
     transition-delay: 0;
+    z-index: 1;
   }
 
   .connection-quality {
@@ -57,8 +57,7 @@
     }
   }
 
-  &:hover .connection-quality,
-  &:focus .connection-quality {
+  &.focused .connection-quality {
     opacity: 1;
     transition-delay: 0;
   }
@@ -106,4 +105,8 @@
   padding: 0.25rem;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: calc(var(--border-radius) / 2);
+
+  &:has(.participant-name) {
+    max-width: 60%;
+  }
 }

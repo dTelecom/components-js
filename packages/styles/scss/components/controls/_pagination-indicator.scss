@@ -12,7 +12,18 @@
   display: flex;
   gap: 0.2rem;
   align-items: center;
+  max-width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
   span {
+    flex-shrink: 0;
     display: inline-block;
     width: 0.4rem;
     height: 0.4rem;
