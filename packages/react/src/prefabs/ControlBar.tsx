@@ -97,7 +97,7 @@ export function ControlBar({ variation, controls, isAdmin, ...props }: ControlBa
             source={Track.Source.Camera}
             showIcon={showIcon}
           >
-            {showText && "Camera"}
+            <span>{showText && "Camera"}</span>
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu kind="videoinput" />
@@ -111,7 +111,7 @@ export function ControlBar({ variation, controls, isAdmin, ...props }: ControlBa
             source={Track.Source.Microphone}
             showIcon={showIcon}
           >
-            {showText && "Microphone"}
+            <span>{showText && "Microphone"}</span>
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu kind="audioinput" />
@@ -126,7 +126,7 @@ export function ControlBar({ variation, controls, isAdmin, ...props }: ControlBa
           showIcon={showIcon}
           onChange={onScreenShareChange}
         >
-          {showText && (isScreenShareEnabled ? "Stop screen share" : "Share Screen")}
+          <span>{showText && (isScreenShareEnabled ? "Stop screen share" : "Share Screen")}</span>
         </TrackToggle>
       )}
 
@@ -140,7 +140,7 @@ export function ControlBar({ variation, controls, isAdmin, ...props }: ControlBa
       {visibleControls.leave && (
         <DisconnectButton>
           {showIcon && <LeaveIcon />}
-          {showText && (isAdmin ? "End" : "Leave")}
+          <span>{showText && (isAdmin ? "End" : "Leave")}</span>
         </DisconnectButton>
       )}
 

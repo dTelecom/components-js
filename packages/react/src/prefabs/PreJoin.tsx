@@ -331,7 +331,7 @@ export function PreJoin({
             source={Track.Source.Microphone}
             onChange={(enabled) => setAudioEnabled(enabled)}
           >
-            {micLabel}
+            <span>{micLabel}</span>
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu
@@ -349,7 +349,7 @@ export function PreJoin({
             source={Track.Source.Camera}
             onChange={(enabled) => setVideoEnabled(enabled)}
           >
-            {camLabel}
+            <span>{camLabel}</span>
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu

@@ -7,14 +7,21 @@
   border-left: 1px solid var(--border-color);
 }
 
+.chat-wrapper {
+  overflow-y: auto;
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-end;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+}
+
 .chat-messages {
   width: 100%;
   flex-grow: 1;
   max-height: 100%;
-  overflow: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 0.25rem;
   margin-bottom: 0.5rem !important;
 }

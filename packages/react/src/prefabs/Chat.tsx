@@ -6,6 +6,7 @@ import { useObservableState } from '../hooks/internal/useObservableState';
 import { cloneSingleChild } from '../utils';
 import type { MessageFormatter } from '../components/ChatEntry';
 import { ChatEntry } from '../components/ChatEntry';
+import { useEffect, useRef } from 'react';
 
 export type { ChatMessage, ReceivedChatMessage };
 
@@ -45,9 +46,18 @@ export function useChat() {
 export function Chat({ messageFormatter, ...props }: ChatProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const ulRef = React.useRef<HTMLUListElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { send, chatMessages, isSending } = useChat();
   const layoutContext = useMaybeLayoutContext();
   const lastReadMsgAt = React.useRef<ChatMessage['timestamp']>(0);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [chatMessages]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -92,7 +102,8 @@ export function Chat({ messageFormatter, ...props }: ChatProps) {
 
   return (
     <div {...props} className="lk-chat">
-      <ul className="lk-list lk-chat-messages" ref={ulRef}>
+      <div className="lk-chat-wrapper">
+        <ul className="lk-list lk-chat-messages" ref={ulRef}>
         {props.children
           ? chatMessages.map((msg, idx) =>
               cloneSingleChild(props.children, {
@@ -116,7 +127,9 @@ export function Chat({ messageFormatter, ...props }: ChatProps) {
                 />
               );
             })}
-      </ul>
+          <div ref={messagesEndRef} />
+        </ul>
+      </div>
       <form className="lk-chat-form" onSubmit={handleSubmit}>
         <input
           className="lk-form-control lk-chat-form-input"
