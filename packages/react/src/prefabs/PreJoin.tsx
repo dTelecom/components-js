@@ -18,6 +18,7 @@ import { TrackToggle } from '../components/controls/TrackToggle';
 import { log } from '@dtelecom/components-core';
 import { ParticipantPlaceholder } from '../assets/images';
 import { useMediaDevices } from '../hooks';
+import { Loader } from '../components/Loader/Loader';
 
 /** @public */
 export type LocalUserChoices = {
@@ -54,6 +55,7 @@ export interface PreJoinProps
   micLabel?: string;
   camLabel?: string;
   userLabel?: string;
+  isLoading?: boolean;
 }
 
 /** @alpha */
@@ -216,6 +218,7 @@ export function PreJoin({
   micLabel = 'Microphone',
   camLabel = 'Camera',
   userLabel = 'Username',
+  isLoading,
   ...htmlProps
 }: PreJoinProps) {
   const [userChoices, setUserChoices] = React.useState(DEFAULT_USER_CHOICES);
@@ -328,7 +331,7 @@ export function PreJoin({
             source={Track.Source.Microphone}
             onChange={(enabled) => setAudioEnabled(enabled)}
           >
-            {micLabel}
+            <span>{micLabel}</span>
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu
@@ -346,7 +349,7 @@ export function PreJoin({
             source={Track.Source.Camera}
             onChange={(enabled) => setVideoEnabled(enabled)}
           >
-            {camLabel}
+            <span>{camLabel}</span>
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu
@@ -375,9 +378,9 @@ export function PreJoin({
           className="lk-button lk-join-button"
           type="submit"
           onClick={handleSubmit}
-          disabled={!isValid}
+          disabled={!isValid || isLoading}
         >
-          {joinLabel}
+          {isLoading ?  <Loader /> : joinLabel}
         </button>
       </form>
 
