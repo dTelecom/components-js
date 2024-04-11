@@ -6,7 +6,7 @@ import {FocusLayout, FocusLayoutContainer} from '../components/layout/FocusLayou
 import {GridLayout} from '../components/layout/GridLayout';
 import type { GridLayoutDefinition, TrackReferenceOrPlaceholder, WidgetState } from '@dtelecom/components-core';
 import {isEqualTrackRef, isTrackReference, log} from '@dtelecom/components-core';
-import {Chat} from './Chat';
+import { Chat, IUseChat } from './Chat';
 import {ConnectionStateToast} from '../components/Toast';
 import type {MessageFormatter} from '../components/ChatEntry';
 import { RemoteTrackPublication, RoomEvent, Track, VideoQuality } from '@dtelecom/livekit-client';
@@ -26,6 +26,7 @@ export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElemen
   isAdmin?: boolean;
   localIdentity?: string;
   gridLayouts?: GridLayoutDefinition[];
+  chatContext?: IUseChat;
 }
 
 
@@ -53,6 +54,7 @@ export function VideoConference(
     isAdmin,
     localIdentity,
     gridLayouts,
+    chatContext,
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
@@ -179,6 +181,7 @@ export function VideoConference(
           />
         </div>
         <Chat
+          chatContext={chatContext}
           style={{display: widgetState.showChat ? "flex" : "none"}}
           messageFormatter={chatMessageFormatter}
         />
