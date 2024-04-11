@@ -1,9 +1,4 @@
-import type {
-  CreateLocalTracksOptions,
-  LocalAudioTrack,
-  LocalTrack,
-  LocalVideoTrack,
-} from '@dtelecom/livekit-client';
+import type { CreateLocalTracksOptions, LocalAudioTrack, LocalTrack, LocalVideoTrack, } from '@dtelecom/livekit-client';
 import {
   createLocalAudioTrack,
   createLocalTracks,
@@ -19,6 +14,8 @@ import { log } from '@dtelecom/components-core';
 import { ParticipantPlaceholder } from '../assets/images';
 import { useMediaDevices } from '../hooks';
 import { Loader } from '../components/Loader/Loader';
+import { UsernameInputIcon } from '../assets/icons';
+import { LanguageSelect } from '../components/LanguageSelect';
 
 /** @public */
 export type LocalUserChoices = {
@@ -27,6 +24,7 @@ export type LocalUserChoices = {
   audioEnabled: boolean;
   videoDeviceId: string;
   audioDeviceId: string;
+  language?: string;
 };
 
 const DEFAULT_USER_CHOICES = {
@@ -36,6 +34,13 @@ const DEFAULT_USER_CHOICES = {
   videoDeviceId: 'default',
   audioDeviceId: 'default',
 };
+
+/** @public */
+export type LanguageOptions = {
+  name: string;
+  code: string;
+  flagIsoCode: string;
+}
 
 /** @public */
 export interface PreJoinProps
@@ -56,6 +61,7 @@ export interface PreJoinProps
   camLabel?: string;
   userLabel?: string;
   isLoading?: boolean;
+  languageOptions?: LanguageOptions[];
 }
 
 /** @alpha */
@@ -120,9 +126,9 @@ export function usePreviewDevice<T extends LocalVideoTrack | LocalAudioTrack>(
       const track =
         kind === 'videoinput'
           ? await createLocalVideoTrack({
-              deviceId: deviceId,
-              resolution: VideoPresets.h720.resolution,
-            })
+            deviceId: deviceId,
+            resolution: VideoPresets.h720.resolution,
+          })
           : await createLocalAudioTrack({ deviceId });
 
       const newDeviceId = await track.getDeviceId();
@@ -219,6 +225,7 @@ export function PreJoin({
   camLabel = 'Camera',
   userLabel = 'Username',
   isLoading,
+  languageOptions,
   ...htmlProps
 }: PreJoinProps) {
   const [userChoices, setUserChoices] = React.useState(DEFAULT_USER_CHOICES);
@@ -235,11 +242,12 @@ export function PreJoin({
     defaults.audioEnabled ?? DEFAULT_USER_CHOICES.audioEnabled,
   );
   const [audioDeviceId, setAudioDeviceId] = React.useState<string>(initialAudioDeviceId);
+  const [language, setLanguage] = React.useState<string>();
 
   const tracks = usePreviewTracks(
     {
       audio: audioEnabled ? initialAudioDeviceId === DEFAULT_USER_CHOICES.audioDeviceId ? true : { deviceId: initialAudioDeviceId } : false,
-      video: videoEnabled ? initialVideoDeviceId === DEFAULT_USER_CHOICES.videoDeviceId ? true :{ deviceId: initialVideoDeviceId } : false,
+      video: videoEnabled ? initialVideoDeviceId === DEFAULT_USER_CHOICES.videoDeviceId ? true : { deviceId: initialVideoDeviceId } : false,
     },
     onError,
   );
@@ -296,10 +304,11 @@ export function PreJoin({
       videoDeviceId: videoDeviceId,
       audioEnabled: audioEnabled,
       audioDeviceId: audioDeviceId,
+      language: language,
     };
     setUserChoices(newUserChoices);
     setIsValid(handleValidation(newUserChoices));
-  }, [username, videoEnabled, handleValidation, audioEnabled, audioDeviceId, videoDeviceId]);
+  }, [username, videoEnabled, handleValidation, audioEnabled, audioDeviceId, videoDeviceId, language]);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -316,7 +325,12 @@ export function PreJoin({
     <div className="lk-prejoin" {...htmlProps}>
       <div className="lk-video-container">
         {videoTrack && (
-          <video ref={videoEl} width="1280" height="720" data-lk-facing-mode={facingMode} />
+          <video
+            ref={videoEl}
+            width="1280"
+            height="720"
+            data-lk-facing-mode={facingMode}
+          />
         )}
         {(!videoTrack || !videoEnabled) && (
           <div className="lk-camera-off-note">
@@ -324,6 +338,7 @@ export function PreJoin({
           </div>
         )}
       </div>
+
       <div className="lk-button-group-container">
         <div className="lk-button-group audio">
           <TrackToggle
@@ -364,30 +379,45 @@ export function PreJoin({
       </div>
 
       <form className="lk-username-container">
-        <input
-          className="lk-form-control"
-          id="username"
-          name="username"
-          type="text"
-          defaultValue={username}
-          placeholder={userLabel}
-          onChange={(inputEl) => setUsername(inputEl.target.value)}
-          autoComplete="off"
-        />
+        {languageOptions && languageOptions.length > 0 && (
+          <LanguageSelect
+            languageOptions={languageOptions}
+            onChange={setLanguage}
+            value={language}
+          />
+        )}
+
+        <div className="lk-username-input-wrapper">
+          <UsernameInputIcon />
+          <input
+            className="lk-username-input"
+            id="username"
+            name="username"
+            type="text"
+            defaultValue={username}
+            placeholder={userLabel}
+            onChange={(inputEl) => setUsername(inputEl.target.value)}
+            autoComplete="off"
+          />
+        </div>
+
         <button
           className="lk-button lk-join-button"
           type="submit"
           onClick={handleSubmit}
           disabled={!isValid || isLoading}
         >
-          {isLoading ?  <Loader /> : joinLabel}
+          {isLoading ? <Loader /> : joinLabel}
         </button>
       </form>
 
       {debug && (
         <>
           <strong>User Choices:</strong>
-          <ul className="lk-list" style={{ overflow: 'hidden', maxWidth: '15rem' }}>
+          <ul
+            className="lk-list"
+            style={{ overflow: 'hidden', maxWidth: '15rem' }}
+          >
             <li>Username: {`${userChoices.username}`}</li>
             <li>Video Enabled: {`${userChoices.videoEnabled}`}</li>
             <li>Audio Enabled: {`${userChoices.audioEnabled}`}</li>

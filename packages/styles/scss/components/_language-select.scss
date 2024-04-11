@@ -1,0 +1,127 @@
+.language-select-wrapper {
+	position: relative;
+
+	.language-select {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		border: 2px solid #2E3031;
+		border-radius: 10px;
+		padding: 16px 24px;
+		position: relative;
+		z-index: 2;
+		cursor: pointer;
+
+		@media (max-width: 600px) {
+			padding: 13px 14px;
+		}
+
+		&::after {
+			display: inline-block;
+			content: '';
+			width: 0.5em;
+			height: 0.5em;
+			margin-top: -0.25rem;
+			margin-left: 0.5rem;
+			border-left: 0.125em solid;
+			border-bottom: 0.125em solid;
+			transform: rotate(-45deg);
+			transform-origin: center center;
+		}
+
+		svg {
+			flex-shrink: 0;
+			border-right: 2px solid #2E3031;
+			padding-right: 16px;
+			margin-right: 16px;
+			width: 48px;
+
+			@media (max-width: 600px) {
+				transform: scale(0.7);
+				margin-right: 4px;
+			}
+		}
+
+		span {
+			flex: 1;
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 140%;
+
+			@media (max-width: 600px) {
+				font-size: 16px;
+			}
+		}
+	}
+
+	.language-select-open {
+		span {
+			color: #777575;
+		}
+	}
+
+	.list-wrapper {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		top: calc(100% - 8px);
+		width: 100%;
+		z-index: 1;
+		padding-right: 8px;
+		height: 262px;
+		border: 2px solid #2E3031;
+		border-top: none;
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+		padding-top: 16px;
+		padding-bottom: 8px;
+		background-color: #000;
+
+		.language-list {
+			background-color: #000;
+			height: 100%;
+			overflow-y: auto;
+
+			&::-webkit-scrollbar {
+				width: 4px;
+				height: 52px;
+				border-radius: 100px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background: #59E970;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: #212121;
+			}
+
+			// For Internet Explorer
+			& {
+				scrollbar-face-color: #212121;
+				scrollbar-track-color: #59E970;
+			}
+
+			.list-item {
+				color: #FFFFFF;
+				padding: 12px 8px 12px 20px;
+				display: flex;
+				align-items: center;
+
+				@media (hover: hover) {
+					&:hover {
+						background-color: #212121;
+					}
+				}
+
+				img {
+					object-fit: cover;
+					width: 26px;
+					height: 26px;
+					border-radius: 50%;
+					margin-right: 19px;
+				}
+			}
+		}
+	}
+}
