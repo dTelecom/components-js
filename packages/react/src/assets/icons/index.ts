@@ -17,3 +17,6 @@ export { default as SpinnerIcon } from './SpinnerIcon';
 export { default as UnfocusToggleIcon } from './UnfocusToggleIcon';
 export { default as UsernameInputIcon } from './UsernameInputIcon';
 export { default as LanguageSelectIcon } from './LanguageSelectIcon';
+export { default as MessageIcon } from './MessageIcon';
+export { default as VoiceIcon } from './VoiceIcon';
+export { default as ChevronRight } from './ChevronRight';
