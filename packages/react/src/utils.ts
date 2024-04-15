@@ -66,6 +66,6 @@ const languageOptions = [
 ];
 
 export function getFlagIso2CodeByLanguage(language: string) {
-  const languageOption = languageOptions.find((option) => option.name === language);
+  const languageOption = languageOptions.find((option) => option.code === language);
   return languageOption?.flagIsoCode || '';
 }
