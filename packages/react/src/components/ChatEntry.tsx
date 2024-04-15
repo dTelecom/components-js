@@ -1,6 +1,8 @@
-import type { ReceivedChatMessage } from '@dtelecom/components-core';
-import { tokenize, createDefaultGrammar } from '@dtelecom/components-core';
+import type { ChatMessage, ReceivedChatMessage } from '@dtelecom/components-core';
+import { createDefaultGrammar, tokenize } from '@dtelecom/components-core';
 import * as React from 'react';
+import { MessageIcon, VoiceIcon } from '../assets/icons';
+import { ChatEntryTranscriptionFlags } from './ChatEntryTranscriptionFlags';
 
 /** @public */
 export type MessageFormatter = (message: string) => React.ReactNode;
@@ -19,6 +21,8 @@ export interface ChatEntryProps extends React.HTMLAttributes<HTMLLIElement> {
   hideTimestamp?: boolean;
   /** An optional formatter for the message body. */
   messageFormatter?: MessageFormatter;
+  type?: ChatMessage['type'];
+  toTranscription?: string;
 }
 
 /**
@@ -68,6 +72,17 @@ export function ChatEntry({
         </span>
       )}
       <span className="lk-message-body">{formattedMessage}</span>
+      {entry.type === 'text' && (
+        <span className="lk-message-type">
+          <MessageIcon />Message
+        </span>
+      )}
+      {entry.type === 'transcription' && (
+        <span className="lk-message-type">
+          <VoiceIcon />Voice
+          <ChatEntryTranscriptionFlags entry={entry} />
+        </span>
+      )}
     </li>
   );
 }

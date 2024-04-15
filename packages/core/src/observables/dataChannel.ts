@@ -6,7 +6,11 @@ import { createDataObserver } from './room';
 
 export const DataTopic = {
   CHAT: 'lk-chat-topic',
+  CHAT_TRANSCRIPTION: 'lk-transcription-topic',
 } as const;
+
+type DataTopicKeys = keyof typeof DataTopic;
+export type DataTopicValues = typeof DataTopic[DataTopicKeys];
 
 export type DataSendOptions = {
   kind?: DataPacket_Kind;

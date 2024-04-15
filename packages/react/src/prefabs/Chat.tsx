@@ -1,4 +1,9 @@
-import type { ChatMessage, ReceivedChatMessage } from '@dtelecom/components-core';
+import type {
+  ChatMessage,
+  DataTopicValues,
+  ReceivedChatMessage,
+  ReceivedChatTranscription
+} from '@dtelecom/components-core';
 import { setupChat } from '@dtelecom/components-core';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
@@ -7,6 +12,7 @@ import { useObservableState } from '../hooks/internal/useObservableState';
 import { cloneSingleChild } from '../utils';
 import type { MessageFormatter } from '../components/ChatEntry';
 import { ChatEntry } from '../components/ChatEntry';
+import { Participant } from '@dtelecom/livekit-client';
 
 export type { ChatMessage, ReceivedChatMessage };
 
@@ -18,8 +24,11 @@ export interface ChatProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export interface IUseChat {
   send?: (message: string) => Promise<void>;
+  sendTranscription?: (transcription: string, language: string) => Promise<void>;
   chatMessages: ReceivedChatMessage[];
+  transcriptions: ReceivedChatTranscription[];
   isSending: boolean;
+  addLocalMessage?: (message: string, from: Participant, topic: DataTopicValues, timestamp: number, type: ChatMessage['type'], language?: string, toTranscription?: string) => void;
 }
 
 /** @public */
@@ -28,6 +37,7 @@ export function useChat(): IUseChat {
   const [setup, setSetup] = React.useState<ReturnType<typeof setupChat>>();
   const isSending = useObservableState(setup?.isSendingObservable, false);
   const chatMessages = useObservableState(setup?.messageObservable, []);
+  const transcriptions = useObservableState(setup?.transcriptionObservable, []);
 
   React.useEffect(() => {
     const setupChatReturn = setupChat(room);
@@ -35,7 +45,14 @@ export function useChat(): IUseChat {
     return setupChatReturn.destroy;
   }, [room]);
 
-  return { send: setup?.send, chatMessages, isSending };
+  return {
+    send: setup?.send,
+    sendTranscription: setup?.sendTranscription,
+    chatMessages,
+    transcriptions,
+    isSending,
+    addLocalMessage: setup?.addLocalMessage
+  };
 }
 
 /**
