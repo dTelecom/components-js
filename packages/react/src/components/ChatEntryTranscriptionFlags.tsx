@@ -2,6 +2,7 @@ import { findFlagUrlByIso2Code } from 'country-flags-svg';
 import React from 'react';
 import { ChevronRight } from '../assets/icons';
 import { ReceivedChatMessage } from '@dtelecom/components-core';
+import { getFlagIso2CodeByLanguage } from '../utils';
 
 interface ChatEntryTranscriptionFlagsProps {
   entry: ReceivedChatMessage;
@@ -9,13 +10,15 @@ interface ChatEntryTranscriptionFlagsProps {
 
 export const ChatEntryTranscriptionFlags = ({ entry }: ChatEntryTranscriptionFlagsProps) => {
   const flag = React.useMemo(() => {
-    if (!entry.language) return null;
-    return findFlagUrlByIso2Code(entry.language === 'en' ? 'us' : entry.language);
+    if (entry.language === undefined) return null;
+    const iso2Code = getFlagIso2CodeByLanguage(entry.language);
+    return findFlagUrlByIso2Code(iso2Code);
   }, [entry.language]);
 
   const toFlag = React.useMemo(() => {
     if (!entry.toTranscription) return null;
-    return findFlagUrlByIso2Code(entry.toTranscription === 'en' ? 'us' : entry.toTranscription);
+    const iso2Code = getFlagIso2CodeByLanguage(entry.toTranscription);
+    return findFlagUrlByIso2Code(iso2Code);
   }, [entry.toTranscription]);
 
   return <div className="lk-message-flags">
