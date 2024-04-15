@@ -1,10 +1,11 @@
 import * as React from 'react';
 import type { SVGProps } from 'react';
-
-const UsernameInputIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path d="M16 29.3333C8.636 29.3333 2.66667 23.364 2.66667 16C2.66667 8.636 8.636 2.66667 16 2.66667C23.364 2.66667 29.3333 8.636 29.3333 16C29.3333 23.364 23.364 29.3333 16 29.3333ZM9.33334 16C9.33334 17.7681 10.0357 19.4638 11.286 20.714C12.5362 21.9643 14.2319 22.6667 16 22.6667C17.7681 22.6667 19.4638 21.9643 20.714 20.714C21.9643 19.4638 22.6667 17.7681 22.6667 16H20C20 17.0609 19.5786 18.0783 18.8284 18.8284C18.0783 19.5786 17.0609 20 16 20C14.9391 20 13.9217 19.5786 13.1716 18.8284C12.4214 18.0783 12 17.0609 12 16H9.33334Z" fill="#59E970"/>
+const SvgUsernameInputIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <path
+      fill="#59E970"
+      d="M16 29.333C8.636 29.333 2.667 23.364 2.667 16S8.636 2.667 16 2.667 29.333 8.636 29.333 16 23.364 29.333 16 29.333M9.333 16a6.666 6.666 0 1 0 13.334 0H20a4 4 0 1 1-8 0z"
+    />
   </svg>
 );
-
-export default UsernameInputIcon;
+export default SvgUsernameInputIcon;

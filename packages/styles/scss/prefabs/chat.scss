@@ -5,6 +5,7 @@
   width: clamp(200px, 55ch, 60ch);
   background-color: var(--bg2);
   border-left: 1px solid var(--border-color);
+  bottom: calc(var(--lk-control-bar-height) + 45px)
 }
 
 .chat-wrapper {
@@ -30,20 +31,27 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  margin: 0 0.25rem;
+  margin: 0 1em;
+
+  @media (max-width: 600px) {
+    margin: 0 0.5em;
+  }
 
   .meta-data {
     font-size: 0.75rem;
     color: var(--fg5);
     white-space: nowrap;
-    padding: 0 0.3rem;
     display: flex;
+
     .participant-name {
+      color: var(--fg);
+      font-size: 0.875em;
       margin-top: 1rem;
     }
     .timestamp {
       margin-left: auto;
       align-self: flex-end;
+      color: #777575;
     }
   }
 
@@ -52,6 +60,26 @@
     padding: 0.25rem 0.75rem;
     word-break: break-word;
     width: fit-content;
+  }
+
+  .message-type {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 0.875em;
+    color: #777575;
+  }
+
+  .message-flags {
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 10px;
+
+    img {
+      height: 100%;
+    }
   }
 
   &[data-message-origin='local'] {
@@ -74,9 +102,14 @@
 .chat-form {
   display: flex;
   gap: 0.75rem;
-  padding: 0.75rem;
+  padding: 1em;
   border-top: 1px solid var(--border-color);
   max-height: var(--control-bar-height);
+
+
+  @media (max-width: 600px) {
+    padding: 0.5em;
+  }
 }
 
 .chat-form-input {
