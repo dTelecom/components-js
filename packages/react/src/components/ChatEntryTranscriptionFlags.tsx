@@ -3,21 +3,23 @@ import React from 'react';
 import { ChevronRight } from '../assets/icons';
 import { ReceivedChatMessage } from '@dtelecom/components-core';
 import { getFlagIso2CodeByLanguage } from '../utils';
+import { LanguageOptions } from '../prefabs';
 
 interface ChatEntryTranscriptionFlagsProps {
   entry: ReceivedChatMessage;
+  languageOptions?: LanguageOptions[];
 }
 
-export const ChatEntryTranscriptionFlags = ({ entry }: ChatEntryTranscriptionFlagsProps) => {
+export const ChatEntryTranscriptionFlags = ({ entry, languageOptions }: ChatEntryTranscriptionFlagsProps) => {
   const flag = React.useMemo(() => {
     if (entry.language === undefined) return null;
-    const iso2Code = getFlagIso2CodeByLanguage(entry.language);
+    const iso2Code = getFlagIso2CodeByLanguage(entry.language, languageOptions);
     return findFlagUrlByIso2Code(iso2Code);
   }, [entry.language]);
 
   const toFlag = React.useMemo(() => {
     if (!entry.toTranscription) return null;
-    const iso2Code = getFlagIso2CodeByLanguage(entry.toTranscription);
+    const iso2Code = getFlagIso2CodeByLanguage(entry.toTranscription, languageOptions);
     return findFlagUrlByIso2Code(iso2Code);
   }, [entry.toTranscription]);
 
