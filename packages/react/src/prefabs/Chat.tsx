@@ -13,6 +13,7 @@ import { cloneSingleChild } from '../utils';
 import type { MessageFormatter } from '../components/ChatEntry';
 import { ChatEntry } from '../components/ChatEntry';
 import { Participant } from '@dtelecom/livekit-client';
+import { LanguageOptions } from './PreJoin';
 
 export type { ChatMessage, ReceivedChatMessage };
 
@@ -20,6 +21,7 @@ export type { ChatMessage, ReceivedChatMessage };
 export interface ChatProps extends React.HTMLAttributes<HTMLDivElement> {
   messageFormatter?: MessageFormatter;
   chatContext?: IUseChat;
+  languageOptions?: LanguageOptions[];
 }
 
 export interface IUseChat {
@@ -67,7 +69,7 @@ export function useChat(): IUseChat {
  * ```
  * @public
  */
-export function Chat({ messageFormatter, chatContext, ...props }: ChatProps) {
+export function Chat({ messageFormatter, chatContext, languageOptions, ...props }: ChatProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const ulRef = React.useRef<HTMLUListElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -151,6 +153,7 @@ export function Chat({ messageFormatter, chatContext, ...props }: ChatProps) {
                   hideTimestamp={hideName === false ? false : hideTimestamp} // If we show the name always show the timestamp as well.
                   entry={msg}
                   messageFormatter={messageFormatter}
+                  languageOptions={languageOptions}
                 />
               );
             })}

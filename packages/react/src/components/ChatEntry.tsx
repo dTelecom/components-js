@@ -3,6 +3,7 @@ import { createDefaultGrammar, tokenize } from '@dtelecom/components-core';
 import * as React from 'react';
 import { MessageIcon, VoiceIcon } from '../assets/icons';
 import { ChatEntryTranscriptionFlags } from './ChatEntryTranscriptionFlags';
+import { LanguageOptions } from '../prefabs';
 
 /** @public */
 export type MessageFormatter = (message: string) => React.ReactNode;
@@ -23,6 +24,7 @@ export interface ChatEntryProps extends React.HTMLAttributes<HTMLLIElement> {
   messageFormatter?: MessageFormatter;
   type?: ChatMessage['type'];
   toTranscription?: string;
+  languageOptions?: LanguageOptions[];
 }
 
 /**
@@ -42,6 +44,7 @@ export function ChatEntry({
   hideName = false,
   hideTimestamp = false,
   messageFormatter,
+  languageOptions,
   ...props
 }: ChatEntryProps) {
   const formattedMessage = React.useMemo(() => {
@@ -80,7 +83,7 @@ export function ChatEntry({
       {entry.type === 'transcription' && (
         <span className="lk-message-type">
           <VoiceIcon />Voice
-          <ChatEntryTranscriptionFlags entry={entry} />
+          <ChatEntryTranscriptionFlags languageOptions={languageOptions} entry={entry} />
         </span>
       )}
     </li>

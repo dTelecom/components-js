@@ -15,6 +15,7 @@ import {usePinnedTracks} from '../hooks/usePinnedTracks';
 import {CarouselLayout} from '../components/layout/CarouselLayout';
 import {useCreateLayoutContext} from '../context/layout-context';
 import {ParticipantTile} from '../components';
+import { LanguageOptions } from './PreJoin';
 
 /**
  * @public
@@ -27,6 +28,7 @@ export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElemen
   localIdentity?: string;
   gridLayouts?: GridLayoutDefinition[];
   chatContext?: IUseChat;
+  languageOptions?: LanguageOptions[];
 }
 
 
@@ -55,6 +57,7 @@ export function VideoConference(
     localIdentity,
     gridLayouts,
     chatContext,
+    languageOptions,
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
@@ -184,6 +187,7 @@ export function VideoConference(
           chatContext={chatContext}
           style={{display: widgetState.showChat ? "flex" : "none"}}
           messageFormatter={chatMessageFormatter}
+          languageOptions={languageOptions}
         />
       </LayoutContextProvider>
       <RoomAudioRenderer/>
