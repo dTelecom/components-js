@@ -15,6 +15,7 @@
   align-items: flex-end;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
+  position: relative;
 }
 
 .chat-messages {
@@ -48,6 +49,7 @@
       font-size: 0.875em;
       margin-top: 1rem;
     }
+
     .timestamp {
       margin-left: auto;
       align-self: flex-end;
@@ -87,6 +89,7 @@
       background-color: var(--bg5);
     }
   }
+
   &[data-message-origin='remote'] {
     .message-body {
       background-color: var(--accent4);
@@ -106,7 +109,6 @@
   border-top: 1px solid var(--border-color);
   max-height: var(--control-bar-height);
 
-
   @media (max-width: 600px) {
     padding: 0.5em;
   }
@@ -123,5 +125,28 @@
     right: 0;
     max-width: 100%;
     bottom: var(--control-bar-height);
+  }
+}
+
+.chat-type-switch {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  border: 1px solid #77757580;
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.chat-type-switch-button {
+  padding: 6px 10px;
+  color: #777575;
+  text-transform: capitalize;
+  border-radius: 6px;
+
+  &-selected {
+    background-color: #2E3031;
+    color: #FFFFFF;
   }
 }

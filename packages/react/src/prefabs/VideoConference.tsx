@@ -4,7 +4,12 @@ import {RoomAudioRenderer} from '../components/RoomAudioRenderer';
 import {ControlBar} from './ControlBar';
 import {FocusLayout, FocusLayoutContainer} from '../components/layout/FocusLayout';
 import {GridLayout} from '../components/layout/GridLayout';
-import type { GridLayoutDefinition, TrackReferenceOrPlaceholder, WidgetState } from '@dtelecom/components-core';
+import type {
+  ChatMessage,
+  GridLayoutDefinition,
+  TrackReferenceOrPlaceholder,
+  WidgetState
+} from '@dtelecom/components-core';
 import {isEqualTrackRef, isTrackReference, log} from '@dtelecom/components-core';
 import { Chat, IUseChat } from './Chat';
 import {ConnectionStateToast} from '../components/Toast';
@@ -29,6 +34,7 @@ export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElemen
   gridLayouts?: GridLayoutDefinition[];
   chatContext?: IUseChat;
   languageOptions?: LanguageOptions[];
+  supportedChatMessageTypes?: ChatMessage['type'][];
 }
 
 
@@ -58,6 +64,7 @@ export function VideoConference(
     gridLayouts,
     chatContext,
     languageOptions,
+    supportedChatMessageTypes,
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
@@ -188,6 +195,7 @@ export function VideoConference(
           style={{display: widgetState.showChat ? "flex" : "none"}}
           messageFormatter={chatMessageFormatter}
           languageOptions={languageOptions}
+          supportedChatMessageTypes={supportedChatMessageTypes}
         />
       </LayoutContextProvider>
       <RoomAudioRenderer/>
