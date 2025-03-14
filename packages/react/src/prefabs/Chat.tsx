@@ -75,9 +75,10 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const ulRef = React.useRef<HTMLUListElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { send, chatMessages, isSending } = chatContext || useChat();
+  const { send, chatMessages, transcriptions, isSending } = chatContext || useChat();
   const layoutContext = useMaybeLayoutContext();
   const lastReadMsgAt = React.useRef<ChatMessage['timestamp']>(0);
+  const lastReadTranscriptionAt = React.useRef<ChatMessage['timestamp']>(0);
   const [selectedType, setSelectedType] = React.useState<ChatMessage['type']>('text');
 
   const scrollToBottom = () => {
@@ -106,17 +107,17 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
   }, [ulRef, chatMessages]);
 
   React.useEffect(() => {
-    if (!layoutContext || chatMessages.length === 0) {
+    if (!layoutContext) {
       return;
     }
 
     if (
       layoutContext.widget.state?.showChat &&
+      selectedType === 'text' &&
       chatMessages.length > 0 &&
       lastReadMsgAt.current !== chatMessages[chatMessages.length - 1]?.timestamp
     ) {
       lastReadMsgAt.current = chatMessages[chatMessages.length - 1]?.timestamp;
-      return;
     }
 
     const unreadMessageCount = chatMessages.filter(
@@ -124,10 +125,35 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
     ).length;
 
     const { widget } = layoutContext;
-    if (unreadMessageCount > 0 && widget.state?.unreadMessages !== unreadMessageCount) {
+    if (unreadMessageCount >= 0 && widget.state?.unreadMessages !== unreadMessageCount) {
       widget.dispatch?.({ msg: 'unread_msg', count: unreadMessageCount });
     }
-  }, [chatMessages, layoutContext?.widget]);
+
+  }, [chatMessages, selectedType, layoutContext?.widget.state?.showChat]);
+
+  React.useEffect(() => {
+    if (!layoutContext) {
+      return;
+    }
+
+    if (
+      layoutContext.widget.state?.showChat &&
+      transcriptions.length > 0 &&
+      selectedType === 'transcription' &&
+      lastReadTranscriptionAt.current !== transcriptions[transcriptions.length - 1]?.timestamp
+    ) {
+      lastReadTranscriptionAt.current = transcriptions[transcriptions.length - 1]?.timestamp;
+    }
+
+    const unreadMessageCount = transcriptions.filter(
+      (msg) => !lastReadTranscriptionAt.current || msg.timestamp > lastReadTranscriptionAt.current,
+    ).length;
+
+    const { widget } = layoutContext;
+    if (unreadMessageCount >= 0 && widget.state?.unreadTranscriptions !== unreadMessageCount) {
+      widget.dispatch?.({ msg: 'unread_transcription', count: unreadMessageCount });
+    }
+  }, [transcriptions, selectedType, layoutContext?.widget.state?.showChat]);
 
   const messagesToRender = React.useMemo(() => {
     if (!props.supportedChatMessageTypes) {

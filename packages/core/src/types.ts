@@ -9,8 +9,9 @@ export const PIN_DEFAULT_STATE: PinState = [];
 export type WidgetState = {
   showChat: boolean;
   unreadMessages: number;
+  unreadTranscriptions: number;
 };
-export const WIDGET_DEFAULT_STATE: WidgetState = { showChat: false, unreadMessages: 0 };
+export const WIDGET_DEFAULT_STATE: WidgetState = { showChat: true, unreadMessages: 0, unreadTranscriptions: 0 };
 
 // ## Track Source Types
 export type TrackSourceWithOptions = { source: Track.Source; withPlaceholder: boolean };

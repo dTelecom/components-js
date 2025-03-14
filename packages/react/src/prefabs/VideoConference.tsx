@@ -68,8 +68,9 @@ export function VideoConference(
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
-    showChat: false,
+    showChat: true,
     unreadMessages: 0,
+    unreadTranscriptions: 0,
   });
 
   const tracks = useTracks(

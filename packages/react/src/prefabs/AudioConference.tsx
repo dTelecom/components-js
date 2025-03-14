@@ -31,6 +31,7 @@ export function AudioConference({ ...props }: AudioConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
     showChat: false,
     unreadMessages: 0,
+    unreadTranscriptions: 0,
   });
   const participants = useParticipants();
 
