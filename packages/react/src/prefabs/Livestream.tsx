@@ -27,12 +27,14 @@ export function Livestream(
     chatContext,
     languageOptions,
     supportedChatMessageTypes,
+    chatWidgetState,
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
     showChat: true,
     unreadMessages: 0,
     unreadTranscriptions: 0,
+    ...chatWidgetState
   });
 
   const tracks = useTracks(
@@ -48,7 +50,7 @@ export function Livestream(
     setWidgetState(state);
   };
 
-  const layoutContext = useCreateLayoutContext();
+  const layoutContext = useCreateLayoutContext({ initialWidgetState: widgetState });
 
   const screenShareTracks = tracks
     .filter(isTrackReference)

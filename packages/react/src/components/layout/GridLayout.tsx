@@ -2,10 +2,11 @@ import * as React from 'react';
 import type { UseParticipantsOptions } from '../../hooks';
 import { useGridLayout, usePagination, useSwipe } from '../../hooks';
 import { mergeProps } from '../../utils';
-import type {GridLayoutDefinition, TrackReferenceOrPlaceholder} from '@dtelecom/components-core';
+import type { GridLayoutDefinition, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
 import { TrackLoop } from '../TrackLoop';
 import { PaginationControl } from '../controls/PaginationControl';
 import { PaginationIndicator } from '../controls/PaginationIndicator';
+import { AiAgentTilePlaceholder } from '../participant/AiAgentTilePlaceholder';
 
 /** @public */
 export interface GridLayoutProps
@@ -14,6 +15,7 @@ export interface GridLayoutProps
   children: React.ReactNode;
   tracks: TrackReferenceOrPlaceholder[];
   gridLayouts?: GridLayoutDefinition[];
+  aiAgentEnabled?: boolean;
 }
 
 /**
@@ -29,15 +31,29 @@ export interface GridLayoutProps
  * ```
  * @public
  */
-export function GridLayout({ tracks, gridLayouts, ...props }: GridLayoutProps) {
+export function GridLayout({ tracks, gridLayouts, aiAgentEnabled, ...props }: GridLayoutProps) {
   const gridEl = React.createRef<HTMLDivElement>();
+
+  const orderedTracks = React.useMemo(() => {
+    if (!aiAgentEnabled) {
+      return tracks;
+    }
+    return tracks.sort((a) => {
+      if (a.participant?.identity === 'ai_agent') {
+        return -1;
+      }
+      return 1;
+    });
+  }, [tracks]);
+
+  const aiAgentTrack = tracks.find((t) => t.participant.identity === "ai_agent");
 
   const elementProps = React.useMemo(
     () => mergeProps(props, { className: 'lk-grid-layout' }),
     [props],
   );
-  const { layout } = useGridLayout(gridEl, tracks.length, gridLayouts);
-  const pagination = usePagination(layout.maxTiles, tracks);
+  const { layout } = useGridLayout(gridEl, orderedTracks.length, gridLayouts);
+  const pagination = usePagination(layout.maxTiles, orderedTracks);
 
   useSwipe(gridEl, {
     onLeftSwipe: pagination.nextPage,
@@ -45,9 +61,12 @@ export function GridLayout({ tracks, gridLayouts, ...props }: GridLayoutProps) {
   });
 
   return (
-    <div ref={gridEl} data-lk-pagination={pagination.totalPageCount > 1} {...elementProps}>
+    <div
+      ref={gridEl}
+      data-lk-pagination={pagination.totalPageCount > 1} {...elementProps}>
+      {aiAgentEnabled && !aiAgentTrack && pagination.currentPage === 1 && <AiAgentTilePlaceholder />}
       <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
-      {tracks.length > layout.maxTiles && (
+      {orderedTracks.length > layout.maxTiles && (
         <>
           <PaginationIndicator
             totalPageCount={pagination.totalPageCount}

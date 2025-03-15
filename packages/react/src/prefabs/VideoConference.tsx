@@ -10,7 +10,7 @@ import type {
   TrackReferenceOrPlaceholder,
   WidgetState
 } from '@dtelecom/components-core';
-import {isEqualTrackRef, isTrackReference, log} from '@dtelecom/components-core';
+import {isEqualTrackRef, isMobileBrowser, isTrackReference, log} from '@dtelecom/components-core';
 import { Chat, IUseChat } from './Chat';
 import {ConnectionStateToast} from '../components/Toast';
 import type {MessageFormatter} from '../components/ChatEntry';
@@ -19,8 +19,9 @@ import {useTracks} from '../hooks/useTracks';
 import {usePinnedTracks} from '../hooks/usePinnedTracks';
 import {CarouselLayout} from '../components/layout/CarouselLayout';
 import {useCreateLayoutContext} from '../context/layout-context';
-import {ParticipantTile} from '../components';
-import { LanguageOptions } from './PreJoin';
+import {ParticipantTileWrapper} from '../components';
+import {LanguageOptions} from './PreJoin';
+import {AiAgentTilePlaceholder} from '../components/participant/AiAgentTilePlaceholder';
 
 /**
  * @public
@@ -35,6 +36,8 @@ export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElemen
   chatContext?: IUseChat;
   languageOptions?: LanguageOptions[];
   supportedChatMessageTypes?: ChatMessage['type'][];
+  aiAgentEnabled?: boolean;
+  chatWidgetState?: Partial<WidgetState>;
 }
 
 
@@ -65,12 +68,15 @@ export function VideoConference(
     chatContext,
     languageOptions,
     supportedChatMessageTypes,
+    aiAgentEnabled = false,
+    chatWidgetState,
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
     showChat: false,
     unreadMessages: 0,
     unreadTranscriptions: 0,
+    ...chatWidgetState
   });
 
   const tracks = useTracks(
@@ -86,14 +92,20 @@ export function VideoConference(
     setWidgetState(state);
   };
 
-  const layoutContext = useCreateLayoutContext();
+  const layoutContext = useCreateLayoutContext({initialWidgetState: widgetState});
 
   const screenShareTracks = tracks
     .filter(isTrackReference)
     .filter((track) => track.publication.source === Track.Source.ScreenShare);
 
+  const aiAgentTrack = tracks.find((t) => t.participant.identity === "ai_agent");
   const focusTrack = usePinnedTracks(layoutContext)?.[0];
-  const carouselTracks = tracks.filter((track) => !isEqualTrackRef(track, focusTrack));
+  const carouselTracks = tracks.filter((track) => {
+    if (focusTrack && isEqualTrackRef(focusTrack, track)) {
+      return false;
+    }
+    return !(!focusTrack && aiAgentTrack && isEqualTrackRef(aiAgentTrack, track));
+  });
   const tracksWithTrackReference = tracks.filter(isTrackReference);
   const enabledVisibleTracks = tracksWithTrackReference.filter((t) => t.publication.isEnabled && t.publication.track?.attachedElements[0])
 
@@ -150,6 +162,7 @@ export function VideoConference(
     });
   }
 
+  const isMobile = React.useMemo(() => isMobileBrowser(), []);
   return (
     <div className="lk-video-conference" {...props}>
       <LayoutContextProvider
@@ -158,13 +171,14 @@ export function VideoConference(
         onWidgetChange={widgetUpdate}
       >
         <div className="lk-video-conference-inner">
-          {!focusTrack ? (
+          {!focusTrack && (aiAgentEnabled && isMobile) ? (
             <div className="lk-grid-layout-wrapper">
               <GridLayout
                 tracks={tracks}
                 gridLayouts={gridLayouts}
+                aiAgentEnabled={aiAgentEnabled}
               >
-                <ParticipantTile
+                <ParticipantTileWrapper
                   onKick={onKick}
                   onMute={onMute}
                   localIdentity={localIdentity}
@@ -174,10 +188,20 @@ export function VideoConference(
           ) : (
             <div className="lk-focus-layout-wrapper">
               <FocusLayoutContainer>
-                {focusTrack && <FocusLayout track={focusTrack}/>}
+                {aiAgentEnabled ? (
+                  <>
+                    {
+                      (focusTrack || aiAgentTrack) ?
+                      <FocusLayout track={focusTrack || aiAgentTrack} /> :
+                      <AiAgentTilePlaceholder />
+                    }
+                  </>
+                ) : (
+                  <FocusLayout track={focusTrack} />
+                )}
 
                 <CarouselLayout tracks={carouselTracks}>
-                  <ParticipantTile
+                  <ParticipantTileWrapper
                     onKick={onKick}
                     onMute={onMute}
                     localIdentity={localIdentity}

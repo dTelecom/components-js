@@ -24,6 +24,7 @@ import ButtonWithToolTip from '../controls/ButtonWithToolTip';
 import LeaveIcon from '../../assets/images/LeaveIcon';
 import MicIcon from '../../assets/images/MicIcon';
 import CamIcon from '../../assets/images/CamIcon';
+import { AiAgentTile } from './AiAgentTile';
 
 /** @public */
 export function ParticipantContextIfNeeded(
@@ -249,3 +250,11 @@ export const ParticipantTile = ({
     </div>
   );
 };
+
+export const ParticipantTileWrapper = (props: ParticipantTileProps) => {
+  const p = useEnsureParticipant(props.participant);
+  if (p.identity === 'ai_agent') {
+    return <AiAgentTile {...props}/>;
+  }
+  return <ParticipantTile {...props} />;
+}

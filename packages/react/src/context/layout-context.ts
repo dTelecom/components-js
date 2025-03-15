@@ -41,10 +41,14 @@ export function useEnsureLayoutContext(layoutContext?: LayoutContextType) {
   return layoutContext;
 }
 
+interface UseLayoutContext {
+  initialWidgetState?: ChatContextType['state'];
+}
+
 /** @public */
-export function useCreateLayoutContext(): LayoutContextType {
+export function useCreateLayoutContext({ initialWidgetState }: UseLayoutContext): LayoutContextType {
   const [pinState, pinDispatch] = React.useReducer(pinReducer, PIN_DEFAULT_STATE);
-  const [widgetState, widgetDispatch] = React.useReducer(chatReducer, WIDGET_DEFAULT_STATE);
+  const [widgetState, widgetDispatch] = React.useReducer(chatReducer, initialWidgetState ?? WIDGET_DEFAULT_STATE);
   return {
     pin: { dispatch: pinDispatch, state: pinState },
     widget: { dispatch: widgetDispatch, state: widgetState },

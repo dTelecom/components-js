@@ -1,9 +1,8 @@
 import type { Participant } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { mergeProps } from '../../utils';
-import type { TrackReference, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
-import { ParticipantTile } from '../participant/ParticipantTile';
-import type { ParticipantClickEvent } from '@dtelecom/components-core';
+import type { ParticipantClickEvent, TrackReference, TrackReferenceOrPlaceholder } from '@dtelecom/components-core';
+import { ParticipantTileWrapper } from '../participant/ParticipantTile';
 
 /** @public */
 export interface FocusLayoutContainerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,5 +25,5 @@ export interface FocusLayoutProps extends React.HTMLAttributes<HTMLElement> {
 
 /** @public */
 export function FocusLayout({ track, ...htmlProps }: FocusLayoutProps) {
-  return <ParticipantTile {...track} {...htmlProps} />;
+  return <ParticipantTileWrapper {...track} {...htmlProps} />;
 }
