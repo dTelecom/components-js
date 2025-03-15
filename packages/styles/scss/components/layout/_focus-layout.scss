@@ -28,3 +28,11 @@
     order: 1;
   }
 }
+
+.focus-layout-livestream-wrapper {
+  @media (max-width: 600px) {
+    .focus-layout {
+      grid-template-rows: 1fr;
+    }
+  }
+}

@@ -5,3 +5,4 @@ export * from './VideoConference';
 export * from './ControlBar';
 export * from './MediaDeviceMenu';
 export * from './AudioConference';
+export * from './Livestream';

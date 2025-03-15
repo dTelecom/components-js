@@ -111,16 +111,18 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
       return;
     }
 
+    const messages = chatMessages.filter((msg) => msg.type === 'text');
+
     if (
       layoutContext.widget.state?.showChat &&
       selectedType === 'text' &&
-      chatMessages.length > 0 &&
-      lastReadMsgAt.current !== chatMessages[chatMessages.length - 1]?.timestamp
+      messages.length > 0 &&
+      lastReadMsgAt.current !== messages[messages.length - 1]?.timestamp
     ) {
-      lastReadMsgAt.current = chatMessages[chatMessages.length - 1]?.timestamp;
+      lastReadMsgAt.current = messages[messages.length - 1]?.timestamp;
     }
 
-    const unreadMessageCount = chatMessages.filter(
+    const unreadMessageCount = messages.filter(
       (msg) => !lastReadMsgAt.current || msg.timestamp > lastReadMsgAt.current,
     ).length;
 

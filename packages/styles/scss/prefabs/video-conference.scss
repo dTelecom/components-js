@@ -10,6 +10,7 @@
 .grid-layout-wrapper {
   flex-direction: column;
   align-items: center;
+  min-height: 0;
 }
 
 .focus-layout-wrapper {
@@ -28,4 +29,35 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
+}
+
+.video-conference-livestream {
+  min-height: 0;
+  flex: 1;
+
+  .video-conference-inner-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    width: 100%;
+    height: calc(100% - calc(var(--lk-control-bar-height)));
+
+    &:has(.chat) {
+      grid-template-columns: 1fr fit-content(25%);
+
+      @media (max-width: 600px) {
+        display: flex;
+        flex-direction: column;
+
+        .focus-layout-wrapper,
+        .grid-layout-wrapper {
+          height: auto;
+        }
+      }
+    }
+
+    .chat {
+      width: 100%;
+    }
+  }
 }

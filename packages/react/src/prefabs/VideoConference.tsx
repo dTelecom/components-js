@@ -68,7 +68,7 @@ export function VideoConference(
     ...props
   }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
-    showChat: true,
+    showChat: false,
     unreadMessages: 0,
     unreadTranscriptions: 0,
   });

@@ -62,6 +62,8 @@ export interface PreJoinProps
   userLabel?: string;
   isLoading?: boolean;
   languageOptions?: LanguageOptions[];
+  defaultLanguageCode?: LanguageOptions['code'];
+  disableVideo?: boolean;
 }
 
 /** @alpha */
@@ -226,6 +228,8 @@ export function PreJoin({
   userLabel = 'Username',
   isLoading,
   languageOptions,
+  defaultLanguageCode,
+  disableVideo,
   ...htmlProps
 }: PreJoinProps) {
   const [userChoices, setUserChoices] = React.useState(DEFAULT_USER_CHOICES);
@@ -242,15 +246,15 @@ export function PreJoin({
     defaults.audioEnabled ?? DEFAULT_USER_CHOICES.audioEnabled,
   );
   const [audioDeviceId, setAudioDeviceId] = React.useState<string>(initialAudioDeviceId);
-  const [language, setLanguage] = React.useState<string>();
+  const [language, setLanguage] = React.useState<string | undefined>(defaultLanguageCode);
 
-  const tracks = usePreviewTracks(
+  const tracks = !disableVideo ? usePreviewTracks(
     {
       audio: audioEnabled ? initialAudioDeviceId === DEFAULT_USER_CHOICES.audioDeviceId ? true : { deviceId: initialAudioDeviceId } : false,
       video: videoEnabled ? initialVideoDeviceId === DEFAULT_USER_CHOICES.videoDeviceId ? true : { deviceId: initialVideoDeviceId } : false,
     },
     onError,
-  );
+  ) : undefined;
 
   const videoEl = React.useRef(null);
 
@@ -323,70 +327,66 @@ export function PreJoin({
 
   return (
     <div className="lk-prejoin" {...htmlProps}>
-      <div className="lk-video-container">
-        {videoTrack && (
-          <video
-            ref={videoEl}
-            width="1280"
-            height="720"
-            data-lk-facing-mode={facingMode}
-          />
-        )}
-        {(!videoTrack || !videoEnabled) && (
-          <div className="lk-camera-off-note">
-            <ParticipantPlaceholder />
+      {!disableVideo && (
+        <>
+          <div className="lk-video-container">
+            {videoTrack && (
+              <video
+                ref={videoEl}
+                width="1280"
+                height="720"
+                data-lk-facing-mode={facingMode}
+              />
+            )}
+            {(!videoTrack || !videoEnabled) && (
+              <div className="lk-camera-off-note">
+                <ParticipantPlaceholder />
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      <div className="lk-button-group-container">
-        <div className="lk-button-group audio">
-          <TrackToggle
-            initialState={audioEnabled}
-            source={Track.Source.Microphone}
-            onChange={(enabled) => setAudioEnabled(enabled)}
-          >
-            <span>{micLabel}</span>
-          </TrackToggle>
-          <div className="lk-button-group-menu">
-            <MediaDeviceMenu
-              initialSelection={audioDeviceId}
-              kind="audioinput"
-              disabled={!audioTrack}
-              tracks={{ audioinput: audioTrack }}
-              onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
-            />
+          <div className="lk-button-group-container">
+            <div className="lk-button-group audio">
+              <TrackToggle
+                initialState={audioEnabled}
+                source={Track.Source.Microphone}
+                onChange={(enabled) => setAudioEnabled(enabled)}
+              >
+                <span>{micLabel}</span>
+              </TrackToggle>
+              <div className="lk-button-group-menu">
+                <MediaDeviceMenu
+                  initialSelection={audioDeviceId}
+                  kind="audioinput"
+                  disabled={!audioTrack}
+                  tracks={{ audioinput: audioTrack }}
+                  onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
+                />
+              </div>
+            </div>
+            <div className="lk-button-group video">
+              <TrackToggle
+                initialState={videoEnabled}
+                source={Track.Source.Camera}
+                onChange={(enabled) => setVideoEnabled(enabled)}
+              >
+                <span>{camLabel}</span>
+              </TrackToggle>
+              <div className="lk-button-group-menu">
+                <MediaDeviceMenu
+                  initialSelection={videoDeviceId}
+                  kind="videoinput"
+                  disabled={!videoTrack}
+                  tracks={{ videoinput: videoTrack }}
+                  onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="lk-button-group video">
-          <TrackToggle
-            initialState={videoEnabled}
-            source={Track.Source.Camera}
-            onChange={(enabled) => setVideoEnabled(enabled)}
-          >
-            <span>{camLabel}</span>
-          </TrackToggle>
-          <div className="lk-button-group-menu">
-            <MediaDeviceMenu
-              initialSelection={videoDeviceId}
-              kind="videoinput"
-              disabled={!videoTrack}
-              tracks={{ videoinput: videoTrack }}
-              onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
-            />
-          </div>
-        </div>
-      </div>
+        </>
+      )}
 
       <form className="lk-username-container">
-        {languageOptions && languageOptions.length > 0 && (
-          <LanguageSelect
-            languageOptions={languageOptions}
-            onChange={setLanguage}
-            value={language}
-          />
-        )}
-
         <div className="lk-username-input-wrapper">
           <UsernameInputIcon />
           <input
@@ -400,6 +400,14 @@ export function PreJoin({
             autoComplete="off"
           />
         </div>
+
+        {languageOptions && languageOptions.length > 0 && (
+          <LanguageSelect
+            languageOptions={languageOptions}
+            onChange={setLanguage}
+            value={language}
+          />
+        )}
 
         <button
           className="lk-button lk-join-button"
