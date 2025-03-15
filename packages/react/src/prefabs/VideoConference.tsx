@@ -163,6 +163,15 @@ export function VideoConference(
   }
 
   const isMobile = React.useMemo(() => isMobileBrowser(), []);
+  console.log(
+    'focusTrack', focusTrack,
+    'aiAgentEnabled', aiAgentEnabled,
+    'isMobile', isMobile,
+    'carouselTracks', carouselTracks,
+  )
+
+  const showGridLayout = aiAgentEnabled ? !focusTrack && isMobile : !focusTrack
+
   return (
     <div className="lk-video-conference" {...props}>
       <LayoutContextProvider
@@ -171,7 +180,7 @@ export function VideoConference(
         onWidgetChange={widgetUpdate}
       >
         <div className="lk-video-conference-inner">
-          {!focusTrack && (aiAgentEnabled && isMobile) ? (
+          {showGridLayout ? (
             <div className="lk-grid-layout-wrapper">
               <GridLayout
                 tracks={tracks}
