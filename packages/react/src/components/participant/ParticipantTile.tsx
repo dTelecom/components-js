@@ -52,6 +52,7 @@ export type ParticipantTileProps = React.HTMLAttributes<HTMLDivElement> & {
   onKick?: (identity: string) => void;
   onMute?: (identity: string, trackSid: string, type?: 'audio' | 'video') => void;
   localIdentity?: string;
+  focusToggleDisabled?: boolean;
 };
 
 /**
@@ -76,6 +77,7 @@ export const ParticipantTile = ({
                                   onMute,
                                   onKick,
                                   localIdentity,
+                                  focusToggleDisabled,
                                   ...htmlProps
                                 }: ParticipantTileProps) => {
   const p = useEnsureParticipant(participant);
@@ -244,7 +246,10 @@ export const ParticipantTile = ({
             <div>{Math.round(bitrate / 1024)} kbps</div>
           )}
         </div>
-        <FocusToggle trackSource={trackRef.source} />
+
+        {!focusToggleDisabled && (
+          <FocusToggle trackSource={trackRef.source} />
+        )}
 
       </ParticipantContextIfNeeded>
     </div>

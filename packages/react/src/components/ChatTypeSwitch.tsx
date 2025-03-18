@@ -10,7 +10,7 @@ interface ChatTypeSwitchProps {
 }
 
 const typeToLabel: Record<string, string> = {
-  text: 'Text',
+  text: 'Chat',
   transcription: 'Transcription',
 };
 

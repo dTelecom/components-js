@@ -22,7 +22,7 @@ export const DraggableLayout = ({ tracks,chatOpen, ...props }: DraggableLayoutPr
   useEffect(() => {
     // @ts-ignore
     outerDivRef.current = document.getElementById('draggable-layout');
-    if (outerDivRef.current) {
+    if (outerDivRef.current && innerDivRef.current) {
       setPosition({
         x: outerDivRef.current.clientWidth - innerDivRef.current!.clientWidth - 16,
         y: 16,
@@ -31,7 +31,7 @@ export const DraggableLayout = ({ tracks,chatOpen, ...props }: DraggableLayoutPr
   }, []);
 
   useEffect(() => {
-    if (outerDivRef.current) {
+    if (outerDivRef.current && innerDivRef.current) {
       setPosition({
         x: outerDivRef.current.clientWidth - innerDivRef.current!.clientWidth - 16,
         y: 16,
@@ -81,17 +81,29 @@ export const DraggableLayout = ({ tracks,chatOpen, ...props }: DraggableLayoutPr
     setIsDragging(false);
   };
 
+  const handleWindowResize = () => {
+    if (outerDivRef.current && innerDivRef.current) {
+      setPosition({
+        x: outerDivRef.current.clientWidth - innerDivRef.current.clientWidth - 16,
+        y: 16,
+      });
+    }
+  }
+
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('resize', handleWindowResize)
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, [isDragging, offset]);
+
   return (
     <>
       {tracks.map((trackReference) => {

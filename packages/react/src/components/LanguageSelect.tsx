@@ -33,7 +33,7 @@ export const LanguageSelect = ({ languageOptions, onChange, value }: LanguageSel
         onClick={toggle}
       >
         <LanguageSelectIcon />
-        <span>{selectedLanguageName || 'Your spoken language'}</span>
+        <span>{selectedLanguageName || 'Select language'}</span>
       </div>
 
       {isOpen && (

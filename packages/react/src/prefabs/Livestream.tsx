@@ -128,13 +128,21 @@ export function Livestream(
                 <GridLayout
                   tracks={tracks}
                   gridLayouts={gridLayouts}
+                  style={{
+                    display: "flex",
+                  }}
                 >
                   <ParticipantTile
                     onKick={onKick}
                     onMute={onMute}
                     localIdentity={localIdentity}
+                    focusToggleDisabled={true}
                   />
                 </GridLayout>
+                <ControlBar
+                  isAdmin={isAdmin}
+                  controls={{ chat: true }}
+                />
               </div>
             ) : (
               <div
@@ -154,6 +162,11 @@ export function Livestream(
                       localIdentity={localIdentity}
                     />
                   </DraggableLayout>
+
+                  <ControlBar
+                    isAdmin={isAdmin}
+                    controls={{ chat: true }}
+                  />
                 </FocusLayoutContainer>
               </div>
             )}
@@ -169,6 +182,7 @@ export function Livestream(
           <ControlBar
             isAdmin={isAdmin}
             controls={{ chat: true }}
+            className="lk-control-bar-mobile"
           />
         </div>
       </LayoutContextProvider>

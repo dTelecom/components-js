@@ -37,14 +37,24 @@
 
   .video-conference-inner-content {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(65%, 100%) minmax(400px, 1fr);
     grid-template-rows: 1fr;
     width: 100%;
-    height: calc(100% - calc(var(--lk-control-bar-height)));
+    height: 100%;
+
+
+    .focus-layout-livestream-wrapper {
+      height: 100%;
+      .participant-tile {
+        flex: 1;
+      }
+    }
+
+    &:has(.chat-hidden) {
+      grid-template-columns: 1fr;
+    }
 
     &:has(.chat) {
-      grid-template-columns: 1fr fit-content(25%);
-
       @media (max-width: 600px) {
         display: flex;
         flex-direction: column;
@@ -58,6 +68,35 @@
 
     .chat {
       width: 100%;
+    }
+
+    .grid-layout-wrapper {
+      height: 100%;
+
+      .grid-layout {
+        padding: 0px 8px 8px 8px;
+        justify-content: center;
+      }
+
+      @media (min-width: 601px) {
+        .grid-layout {
+          padding: 0 8px 0 16px;
+        }
+      }
+    }
+  }
+
+  .control-bar {
+    display: none;
+    @media (min-width: 600px) {
+      display: flex;
+    }
+  }
+
+  .control-bar-mobile {
+    display: none;
+    @media (max-width: 600px) {
+      display: flex;
     }
   }
 }

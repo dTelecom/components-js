@@ -30,9 +30,12 @@
 }
 
 .focus-layout-livestream-wrapper {
+  min-height: 0;
+
   @media (max-width: 600px) {
     .focus-layout {
-      grid-template-rows: 1fr;
+      display: flex;
+      flex-direction: column;
     }
   }
 }

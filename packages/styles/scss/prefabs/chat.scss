@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: stretch;
   width: clamp(200px, 55ch, 60ch);
-  background-color: var(--bg2);
   border-left: 1px solid var(--border-color);
   min-height: 0;
 }
@@ -48,7 +47,8 @@
 
     .participant-name {
       color: var(--fg);
-      font-size: 0.875em;
+      font-size: 0.933em;
+      line-height: 140%;
       margin-top: 1rem;
     }
 
@@ -106,7 +106,7 @@
 
 .chat-form {
   display: flex;
-  gap: 0.75rem;
+  gap: 8px;
   padding: 1em;
   border-top: 1px solid var(--border-color);
   max-height: var(--control-bar-height);

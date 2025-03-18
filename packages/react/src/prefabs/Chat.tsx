@@ -15,6 +15,7 @@ import { ChatEntry } from '../components/ChatEntry';
 import { Participant } from '@dtelecom/livekit-client';
 import { LanguageOptions } from './PreJoin';
 import { ChatTypeSwitch } from '../components/ChatTypeSwitch';
+import clsx from 'clsx';
 
 export type { ChatMessage, ReceivedChatMessage };
 
@@ -172,7 +173,7 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
   }, [chatMessages, props.supportedChatMessageTypes, selectedType]);
 
   return (
-    <div {...props} className="lk-chat">
+    <div {...props} className={clsx("lk-chat", !layoutContext?.widget.state?.showChat && 'lk-chat-hidden')}>
       <div className="lk-chat-wrapper">
         {!!props.supportedChatMessageTypes && <ChatTypeSwitch
           selectedType={selectedType}
@@ -211,25 +212,30 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
           <div ref={messagesEndRef} />
         </ul>
       </div>
-      <form
-        className="lk-chat-form"
-        onSubmit={handleSubmit}
-      >
-        <input
-          className="lk-form-control lk-chat-form-input"
-          disabled={isSending}
-          ref={inputRef}
-          type="text"
-          placeholder="Enter a message..."
-        />
-        <button
-          type="submit"
-          className="lk-button lk-chat-form-button"
-          disabled={isSending}
+      {selectedType === 'text' ? (
+        <form
+          className="lk-chat-form"
+          onSubmit={handleSubmit}
         >
-          Send
-        </button>
-      </form>
+          <input
+            className="lk-form-control lk-chat-form-input"
+            disabled={isSending}
+            ref={inputRef}
+            type="text"
+            placeholder="Enter a message..."
+          />
+          <button
+            type="submit"
+            className="lk-button lk-chat-form-button"
+            disabled={isSending}
+          >
+            Send
+          </button>
+        </form>
+      ) : (
+        <div className="lk-chat-form"/>
+      )}
+
     </div>
   );
 }

@@ -27,8 +27,8 @@
   .form-control {
     font-family: var(--font-family);
     padding: 0.625rem 1rem;
-    background-color: var(--control-bg);
+    background-color: #777575;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: 10px;
   }
 }
