@@ -62,7 +62,7 @@ export const DraggableLayout = ({ tracks,chatOpen, ...props }: DraggableLayoutPr
     const minX = outerRect.left;
     const minY = outerRect.top;
     const maxX = outerRect.right - innerRect.width;
-    const maxY = outerRect.bottom - innerRect.height;
+    const maxY = outerRect.bottom - innerRect.height - (window.innerWidth > 600 ? 69 : 0);
 
     newX = Math.max(minX, Math.min(newX, maxX));
     newY = Math.max(minY, Math.min(newY, maxY));

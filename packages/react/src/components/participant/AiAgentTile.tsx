@@ -172,6 +172,7 @@ export const AiAgentTile = ({
                 loop
                 controls={false}
                 className="lk-participant-media-video"
+                preload="auto"
               />
             ) : (
               <>
