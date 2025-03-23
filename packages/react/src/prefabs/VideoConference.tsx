@@ -1,27 +1,26 @@
 import * as React from 'react';
-import {LayoutContextProvider} from '../components/layout/LayoutContextProvider';
-import {RoomAudioRenderer} from '../components/RoomAudioRenderer';
-import {ControlBar} from './ControlBar';
-import {FocusLayout, FocusLayoutContainer} from '../components/layout/FocusLayout';
-import {GridLayout} from '../components/layout/GridLayout';
+import { LayoutContextProvider } from '../components/layout/LayoutContextProvider';
+import { RoomAudioRenderer } from '../components/RoomAudioRenderer';
+import { ControlBar } from './ControlBar';
+import { FocusLayout, FocusLayoutContainer } from '../components/layout/FocusLayout';
+import { GridLayout } from '../components/layout/GridLayout';
 import type {
   ChatMessage,
   GridLayoutDefinition,
   TrackReferenceOrPlaceholder,
   WidgetState
 } from '@dtelecom/components-core';
-import {isEqualTrackRef, isMobileBrowser, isTrackReference, log} from '@dtelecom/components-core';
+import { isEqualTrackRef, isMobileBrowser, isTrackReference, log } from '@dtelecom/components-core';
 import { Chat, IUseChat } from './Chat';
-import {ConnectionStateToast} from '../components/Toast';
-import type {MessageFormatter} from '../components/ChatEntry';
+import { ConnectionStateToast } from '../components/Toast';
+import type { MessageFormatter } from '../components/ChatEntry';
 import { RemoteTrackPublication, RoomEvent, Track, VideoQuality } from '@dtelecom/livekit-client';
-import {useTracks} from '../hooks/useTracks';
-import {usePinnedTracks} from '../hooks/usePinnedTracks';
-import {CarouselLayout} from '../components/layout/CarouselLayout';
-import {useCreateLayoutContext} from '../context/layout-context';
-import {ParticipantTileWrapper} from '../components';
-import {LanguageOptions} from './PreJoin';
-import {AiAgentTilePlaceholder} from '../components/participant/AiAgentTilePlaceholder';
+import { useTracks } from '../hooks/useTracks';
+import { usePinnedTracks } from '../hooks/usePinnedTracks';
+import { CarouselLayout } from '../components/layout/CarouselLayout';
+import { useCreateLayoutContext } from '../context/layout-context';
+import { ParticipantTileWrapper } from '../components';
+import { LanguageOptions } from './PreJoin';
 
 /**
  * @public
@@ -81,10 +80,10 @@ export function VideoConference(
 
   const tracks = useTracks(
     [
-      {source: Track.Source.Camera, withPlaceholder: true},
-      {source: Track.Source.ScreenShare, withPlaceholder: false}
+      { source: Track.Source.Camera, withPlaceholder: true },
+      { source: Track.Source.ScreenShare, withPlaceholder: false }
     ],
-    {updateOnlyOn: [RoomEvent.ActiveSpeakersChanged]}
+    { updateOnlyOn: [RoomEvent.ActiveSpeakersChanged] }
   );
 
   const widgetUpdate = (state: WidgetState) => {
@@ -92,7 +91,7 @@ export function VideoConference(
     setWidgetState(state);
   };
 
-  const layoutContext = useCreateLayoutContext({initialWidgetState: widgetState});
+  const layoutContext = useCreateLayoutContext({ initialWidgetState: widgetState });
 
   const screenShareTracks = tracks
     .filter(isTrackReference)
@@ -107,7 +106,7 @@ export function VideoConference(
     return !(!focusTrack && aiAgentTrack && isEqualTrackRef(aiAgentTrack, track));
   });
   const tracksWithTrackReference = tracks.filter(isTrackReference);
-  const enabledVisibleTracks = tracksWithTrackReference.filter((t) => t.publication.isEnabled && t.publication.track?.attachedElements[0])
+  const enabledVisibleTracks = tracksWithTrackReference.filter((t) => t.publication.isEnabled && t.publication.track?.attachedElements[0]);
 
   const pickTrackQuality = () => {
     if (focusTrack) {
@@ -122,7 +121,7 @@ export function VideoConference(
 
       return VideoQuality.HIGH;
     }
-  }
+  };
 
   React.useEffect(() => {
     // if screen share tracks are published, and no pin is set explicitly, auto set the screen share
@@ -160,7 +159,7 @@ export function VideoConference(
         t.publication.setVideoQuality(quality);
       }
     });
-  }
+  };
 
   const isMobile = React.useMemo(() => isMobileBrowser(), []);
   console.log(
@@ -168,9 +167,9 @@ export function VideoConference(
     'aiAgentEnabled', aiAgentEnabled,
     'isMobile', isMobile,
     'carouselTracks', carouselTracks,
-  )
+  );
 
-  const showGridLayout = aiAgentEnabled ? !focusTrack && isMobile : !focusTrack
+  const showGridLayout = aiAgentEnabled ? !focusTrack && isMobile : !focusTrack;
 
   return (
     <div className="lk-video-conference" {...props}>
@@ -201,8 +200,8 @@ export function VideoConference(
                   <>
                     {
                       (focusTrack || aiAgentTrack) ?
-                      <FocusLayout track={focusTrack || aiAgentTrack} /> :
-                      <AiAgentTilePlaceholder />
+                        <FocusLayout track={focusTrack || aiAgentTrack} /> :
+                        null
                     }
                   </>
                 ) : (
@@ -221,19 +220,19 @@ export function VideoConference(
           )}
           <ControlBar
             isAdmin={isAdmin}
-            controls={{chat: true}}
+            controls={{ chat: true }}
           />
         </div>
         <Chat
           chatContext={chatContext}
-          style={{display: widgetState.showChat ? "flex" : "none"}}
+          style={{ display: widgetState.showChat ? "flex" : "none" }}
           messageFormatter={chatMessageFormatter}
           languageOptions={languageOptions}
           supportedChatMessageTypes={supportedChatMessageTypes}
         />
       </LayoutContextProvider>
-      <RoomAudioRenderer/>
-      <ConnectionStateToast/>
+      <RoomAudioRenderer />
+      <ConnectionStateToast />
     </div>
   );
 }

@@ -6,7 +6,6 @@ import type { GridLayoutDefinition, TrackReferenceOrPlaceholder } from '@dteleco
 import { TrackLoop } from '../TrackLoop';
 import { PaginationControl } from '../controls/PaginationControl';
 import { PaginationIndicator } from '../controls/PaginationIndicator';
-import { AiAgentTilePlaceholder } from '../participant/AiAgentTilePlaceholder';
 
 /** @public */
 export interface GridLayoutProps
@@ -46,8 +45,6 @@ export function GridLayout({ tracks, gridLayouts, aiAgentEnabled, ...props }: Gr
     });
   }, [tracks]);
 
-  const aiAgentTrack = tracks.find((t) => t.participant.identity === "ai_agent");
-
   const elementProps = React.useMemo(
     () => mergeProps(props, { className: 'lk-grid-layout' }),
     [props],
@@ -64,7 +61,6 @@ export function GridLayout({ tracks, gridLayouts, aiAgentEnabled, ...props }: Gr
     <div
       ref={gridEl}
       data-lk-pagination={pagination.totalPageCount > 1} {...elementProps}>
-      {aiAgentEnabled && !aiAgentTrack && pagination.currentPage === 1 && <AiAgentTilePlaceholder />}
       <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
       {orderedTracks.length > layout.maxTiles && (
         <>

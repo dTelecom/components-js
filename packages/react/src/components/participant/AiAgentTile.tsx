@@ -17,7 +17,7 @@ import {
 import { FocusToggle } from '../controls/FocusToggle';
 import { ScreenShareIcon } from '../../assets/icons';
 import { AudioTrack } from './AudioTrack';
-import { useIsSpeaking, useParticipantTile } from '../../hooks';
+import { useParticipantTile } from '../../hooks';
 
 /** @public */
 export function ParticipantContextIfNeeded(
@@ -72,7 +72,6 @@ export const AiAgentTile = ({
                               ...htmlProps
                             }: AiAgentTileProps) => {
   const p = useEnsureParticipant(participant);
-  const isSpeaking = useIsSpeaking(p);
   const videoRef = useRef<HTMLVideoElement>(null);
   const trackRef: TrackReferenceOrPlaceholder = useMaybeTrackContext() ?? {
     participant: p,
@@ -110,12 +109,8 @@ export const AiAgentTile = ({
   }, []);
 
   useEffect(() => {
-    if (isSpeaking) {
-      videoRef.current?.play();
-    } else {
-      videoRef.current?.pause();
-    }
-  }, [isSpeaking]);
+    videoRef.current?.play();
+  }, []);
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
     participant: trackRef.participant,
@@ -173,6 +168,7 @@ export const AiAgentTile = ({
                 controls={false}
                 className="lk-participant-media-video"
                 preload="auto"
+                autoPlay={true}
               />
             ) : (
               <>

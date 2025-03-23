@@ -64,6 +64,7 @@ export interface PreJoinProps
   languageOptions?: LanguageOptions[];
   defaultLanguageCode?: LanguageOptions['code'];
   disableVideo?: boolean;
+  formTitle?: string;
 }
 
 /** @alpha */
@@ -230,6 +231,7 @@ export function PreJoin({
   languageOptions,
   defaultLanguageCode,
   disableVideo,
+  formTitle,
   ...htmlProps
 }: PreJoinProps) {
   const [userChoices, setUserChoices] = React.useState(DEFAULT_USER_CHOICES);
@@ -327,6 +329,10 @@ export function PreJoin({
 
   return (
     <div className="lk-prejoin" {...htmlProps}>
+      {formTitle && (
+        <h2 className="lk-form-title">{formTitle}</h2>
+      )}
+
       {!disableVideo && (
         <>
           <div className="lk-video-container">
