@@ -25,6 +25,7 @@ export interface ChatEntryProps extends React.HTMLAttributes<HTMLLIElement> {
   type?: ChatMessage['type'];
   toTranscription?: string;
   languageOptions?: LanguageOptions[];
+  localIdentity?: string;
 }
 
 /**
@@ -45,6 +46,7 @@ export function ChatEntry({
   hideTimestamp = false,
   messageFormatter,
   languageOptions,
+  localIdentity,
   ...props
 }: ChatEntryProps) {
   const formattedMessage = React.useMemo(() => {
@@ -57,7 +59,7 @@ export function ChatEntry({
     <li
       className="lk-chat-entry"
       title={time.toLocaleTimeString(locale, { timeStyle: 'full' })}
-      data-lk-message-origin={entry.from?.isLocal ? 'local' : 'remote'}
+      data-lk-message-origin={entry.from?.identity === localIdentity ? 'local' : 'remote'}
       {...props}
     >
       {(!hideTimestamp || !hideName) && (

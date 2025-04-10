@@ -162,12 +162,6 @@ export function VideoConference(
   };
 
   const isMobile = React.useMemo(() => isMobileBrowser(), []);
-  console.log(
-    'focusTrack', focusTrack,
-    'aiAgentEnabled', aiAgentEnabled,
-    'isMobile', isMobile,
-    'carouselTracks', carouselTracks,
-  );
 
   const showGridLayout = aiAgentEnabled ? !focusTrack && isMobile : !focusTrack;
 

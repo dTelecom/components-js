@@ -81,6 +81,7 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
   const lastReadMsgAt = React.useRef<ChatMessage['timestamp']>(0);
   const lastReadTranscriptionAt = React.useRef<ChatMessage['timestamp']>(0);
   const [selectedType, setSelectedType] = React.useState<ChatMessage['type']>('text');
+  const room = useRoomContext();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -206,6 +207,7 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
                   entry={msg}
                   messageFormatter={messageFormatter}
                   languageOptions={languageOptions}
+                  localIdentity={room.localParticipant?.identity}
                 />
               );
             })}
