@@ -10,12 +10,14 @@ export interface ChatMessage {
   type?: 'text' | 'transcription';
   language?: string;
   toTranscription?: string;
+  speaker?: Participant;
 }
 
 export interface ChatTranscription {
   timestamp: number;
   transcription: string;
   language: string;
+  speaker?: Participant;
 }
 
 export interface ReceivedChatTranscription extends ChatTranscription {
@@ -45,7 +47,8 @@ export function setupChat(room: Room) {
   const messagesObservable = messageSubject.pipe(
     map((msg) => {
       const parsedMessage = JSON.parse(decoder.decode(msg.payload)) as ChatMessage;
-      const newMessage: ReceivedChatMessage = { ...parsedMessage, from: msg.from };
+      const from = msg.from?.identity === 'ai_agent' && parsedMessage.speaker ? parsedMessage.speaker : msg.from;
+      const newMessage: ReceivedChatMessage = { ...parsedMessage, from };
       return newMessage;
     }),
     scan<ReceivedChatMessage, ReceivedChatMessage[]>((acc, value) => [...acc, value], []),
@@ -86,13 +89,15 @@ export function setupChat(room: Room) {
     type: ChatMessage['type'] = 'text',
     language?: string,
     toTranscription?: string,
+    speaker?: Participant,
   ) => {
     const encodedMsg = encoder.encode(JSON.stringify({
       timestamp: timestamp || Date.now(),
       message,
       type,
       language,
-      toTranscription
+      toTranscription,
+      speaker,
     }));
 
     messageSubject.next({
@@ -110,7 +115,8 @@ export function setupChat(room: Room) {
   const transcriptionsObservable = transcriptionSubject.pipe(
     map((msg) => {
       const parsedMessage = JSON.parse(decoder.decode(msg.payload)) as ChatTranscription;
-      const newMessage: ReceivedChatTranscription = { ...parsedMessage, from: msg.from };
+      const from = msg.from?.identity === 'ai_agent' && parsedMessage.speaker ? parsedMessage.speaker : msg.from;
+      const newMessage: ReceivedChatTranscription = { ...parsedMessage, from };
       return newMessage;
     }),
     scan<ReceivedChatTranscription, ReceivedChatTranscription[]>((acc, value) => [...acc, value], []),
