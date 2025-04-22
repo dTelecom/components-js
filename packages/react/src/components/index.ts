@@ -22,3 +22,4 @@ export * from './Toast';
 export * from './TrackLoop';
 export * from './participant/ParticipantTile';
 export * from './participant/ParticipantAudioTile';
+export * from "./ActivityModal";

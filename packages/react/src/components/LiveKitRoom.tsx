@@ -1,14 +1,16 @@
 import type {
   AudioCaptureOptions,
+  MediaDeviceFailure,
+  Room,
   RoomConnectOptions,
   RoomOptions,
   ScreenShareCaptureOptions,
   VideoCaptureOptions,
 } from '@dtelecom/livekit-client';
-import type { MediaDeviceFailure, Room } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { RoomContext } from '../context';
 import { useLiveKitRoom } from '../hooks';
+import { ActivityModal } from './';
 
 /** @public */
 export interface LiveKitRoomProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onError'> {
@@ -75,6 +77,8 @@ export interface LiveKitRoomProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   room?: Room;
 
   simulateParticipants?: number | undefined;
+
+  activityModalEnabled?: boolean;
 }
 
 // type RoomContextState = {
@@ -102,10 +106,15 @@ export interface LiveKitRoomProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * @public
  */
 export function LiveKitRoom(props: React.PropsWithChildren<LiveKitRoomProps>) {
-  const { room, htmlProps } = useLiveKitRoom(props);
+  const { room, htmlProps, activityModalEnabled } = useLiveKitRoom(props);
   return (
     <div {...htmlProps}>
-      {room && <RoomContext.Provider value={room}>{props.children}</RoomContext.Provider>}
+      {
+        room && <RoomContext.Provider value={room}>
+          {props.children}
+          {activityModalEnabled && <ActivityModal/>}
+        </RoomContext.Provider>
+      }
     </div>
   );
 }

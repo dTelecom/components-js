@@ -72,7 +72,7 @@ export function useChat(): IUseChat {
  * ```
  * @public
  */
-export function Chat({ messageFormatter, chatContext, languageOptions, ...props }: ChatProps) {
+export function Chat({ messageFormatter, chatContext, languageOptions, supportedChatMessageTypes, ...props }: ChatProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const ulRef = React.useRef<HTMLUListElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -160,26 +160,26 @@ export function Chat({ messageFormatter, chatContext, languageOptions, ...props 
   }, [transcriptions, selectedType, layoutContext?.widget.state?.showChat]);
 
   const messagesToRender = React.useMemo(() => {
-    if (!props.supportedChatMessageTypes) {
+    if (!supportedChatMessageTypes) {
       return chatMessages;
     }
 
     if (selectedType === 'text') {
       return chatMessages.filter((msg) => {
-        return msg.type === 'text' || !props.supportedChatMessageTypes?.includes(msg.type);
+        return msg.type === 'text' || !supportedChatMessageTypes?.includes(msg.type);
       });
     }
 
     return chatMessages.filter((msg) => msg.type === selectedType);
-  }, [chatMessages, props.supportedChatMessageTypes, selectedType]);
+  }, [chatMessages, supportedChatMessageTypes, selectedType]);
 
   return (
     <div {...props} className={clsx("lk-chat", !layoutContext?.widget.state?.showChat && 'lk-chat-hidden')}>
       <div className="lk-chat-wrapper">
-        {!!props.supportedChatMessageTypes && <ChatTypeSwitch
+        {!!supportedChatMessageTypes && <ChatTypeSwitch
           selectedType={selectedType}
           onTypeSelect={(type) => setSelectedType(type)}
-          supportedChatMessageTypes={props.supportedChatMessageTypes}
+          supportedChatMessageTypes={supportedChatMessageTypes}
         />}
 
         <ul

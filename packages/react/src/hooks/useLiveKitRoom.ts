@@ -18,6 +18,7 @@ export function useLiveKitRoom<T extends HTMLElement>(
 ): {
   room: Room | undefined;
   htmlProps: HTMLAttributes<T>;
+  activityModalEnabled: boolean;
 } {
   const {
     token,
@@ -34,6 +35,7 @@ export function useLiveKitRoom<T extends HTMLElement>(
     onError,
     onMediaDeviceFailure,
     simulateParticipants,
+    activityModalEnabled,
     ...rest
   } = { ...defaultRoomProps, ...props };
   if (options && passedRoom) {
@@ -155,5 +157,5 @@ export function useLiveKitRoom<T extends HTMLElement>(
     };
   }, [room]);
 
-  return { room, htmlProps };
+  return { room, htmlProps, activityModalEnabled: activityModalEnabled ?? false };
 }

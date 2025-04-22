@@ -1,0 +1,121 @@
+.activity-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-modal {
+  padding: 32px 40px;
+  background: #212121;
+  border-radius: 10px;
+
+  @media (max-width: 600px) {
+    padding: 16px 20px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  h6 {
+    color: #777575;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 140%;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .activity-modal-countdown {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px auto;
+
+    .countdown-svg {
+      flex-shrink: 0;
+      transform: rotate(-90deg);
+
+      .countdown-circle-bg {
+        stroke: #777575;
+        fill: none;
+        stroke-dasharray: 2 4;
+      }
+
+      .countdown-circle-progress {
+        stroke: #59E970;
+        fill: none;
+      }
+    }
+
+    .activity-modal-countdown-inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .activity-modal-countdown-inner-title {
+        font-weight: 700;
+        font-size: 42px;
+        line-height: 42px;
+        letter-spacing: 0;
+        text-align: center;
+        color: #FFFFFF;
+      }
+
+      .activity-modal-countdown-inner-text {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 140%;
+        letter-spacing: 0;
+        text-align: center;
+        color: #777575;
+      }
+    }
+  }
+
+  .activity-modal-buttons-container {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+
+    button {
+      height: 40px;
+      flex: 1;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 140%;
+      letter-spacing: 0;
+      color: #FFFFFF;
+      border-radius: 5px;
+    }
+
+    .activity-modal-button-leave {
+      background: #2E3031;
+    }
+
+    .activity-modal-button-stay {
+      background: #59E970;
+      color: #000000;
+    }
+  }
+}
