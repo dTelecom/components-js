@@ -7,6 +7,10 @@
     font-weight: 500;
     font-size: 20px;
     line-height: 100%;
+
+    @media (max-width: 600px) {
+      font-size: 16px;
+    }
   }
 
   .language-select-switch-buttons-container {
@@ -38,7 +42,7 @@
       color: #777575;
 
       &.language-select-switch-button-disabled-active {
-        color: #000000;
+        color: #FFFFFF;
         background: #212121;
       }
     }
