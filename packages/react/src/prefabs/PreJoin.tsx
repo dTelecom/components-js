@@ -409,6 +409,7 @@ export function PreJoin({
 
         {languageOptions && languageOptions.length > 0 && (
           <LanguageSelect
+            defaultLanguageCode={defaultLanguageCode}
             languageOptions={languageOptions}
             onChange={setLanguage}
             value={language}
