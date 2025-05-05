@@ -113,10 +113,12 @@
   }
 
   .language-select-disabled {
-    color: #777575;
+    span {
+      color: #2E3031;
+    }
 
     svg {
-      color: #777575;
+      color: #2E3031;
     }
   }
 

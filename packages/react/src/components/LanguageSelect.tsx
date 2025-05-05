@@ -62,7 +62,7 @@ export const LanguageSelect = ({ languageOptions, onChange, value, defaultLangua
     <div className="lk-language-select-wrapper">
 
       <div
-        className={clsx("lk-language-select", isOpen && "lk-language-select-open", !enabled && "lk-language-select-disabled")}
+        className={clsx("lk-language-select", (!selectedLanguageName || isOpen) && "lk-language-select-open", !enabled && "lk-language-select-disabled")}
         onClick={enabled ? toggle : undefined}
       >
         <LanguageSelectIcon />
