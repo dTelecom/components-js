@@ -117,7 +117,11 @@
     --control-active-bg: var(--accent3);
     --control-active-hover-bg: var(--accent4);
     background-color: var(--control-bg);
-    height: 64px;
+    height: 56px;
+
+    @media (max-width: 600px) {
+      height: 54px;
+    }
 
     &:hover {
       background-color: var(--control-hover-bg);
