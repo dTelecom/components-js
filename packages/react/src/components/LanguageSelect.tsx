@@ -66,7 +66,7 @@ export const LanguageSelect = ({ languageOptions, onChange, value, defaultLangua
         onClick={enabled ? toggle : undefined}
       >
         <LanguageSelectIcon />
-        <span>{selectedLanguageName || 'Select language'}</span>
+        <span>{selectedLanguageName || 'Your spoken language'}</span>
       </div>
 
       {isOpen && (
