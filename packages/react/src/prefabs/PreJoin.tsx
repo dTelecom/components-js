@@ -6,6 +6,7 @@ import {
   facingModeFromLocalTrack,
   Track,
   VideoPresets,
+  Mutex
 } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
@@ -67,38 +68,47 @@ export interface PreJoinProps
   formTitle?: string;
 }
 
-/** @alpha */
+/** @public */
 export function usePreviewTracks(
   options: CreateLocalTracksOptions,
   onError?: (err: Error) => void,
 ) {
   const [tracks, setTracks] = React.useState<LocalTrack[]>();
 
+  const trackLock = React.useMemo(() => new Mutex(), []);
+
   React.useEffect(() => {
-    let trackPromise: Promise<LocalTrack[]> | undefined = undefined;
     let needsCleanup = false;
-    if (options.audio || options.video) {
-      trackPromise = createLocalTracks(options);
-      trackPromise
-        .then((tracks) => {
+    let localTracks: Array<LocalTrack> = [];
+    trackLock.lock().then(async (unlock) => {
+      try {
+        if (options.audio || options.video) {
+          localTracks = await createLocalTracks(options);
+
           if (needsCleanup) {
-            tracks.forEach((tr) => tr.stop());
+            localTracks.forEach((tr) => tr.stop());
           } else {
-            setTracks(tracks);
+            setTracks(localTracks);
           }
-        })
-        .catch(onError);
-    }
+        }
+      } catch (e: unknown) {
+        if (onError && e instanceof Error) {
+          onError(e);
+        } else {
+          log.error(e);
+        }
+      } finally {
+        unlock();
+      }
+    });
 
     return () => {
       needsCleanup = true;
-      trackPromise?.then((tracks) =>
-        tracks.forEach((track) => {
-          track.stop();
-        }),
-      );
+      localTracks.forEach((track) => {
+        track.stop();
+      });
     };
-  }, [JSON.stringify(options)]);
+  }, [JSON.stringify(options), onError, trackLock]);
 
   return tracks;
 }

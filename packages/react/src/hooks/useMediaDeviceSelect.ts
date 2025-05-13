@@ -1,5 +1,5 @@
 import { createMediaDeviceObserver, setupDeviceSelector, log } from '@dtelecom/components-core';
-import type { LocalAudioTrack, LocalVideoTrack, Room } from '@dtelecom/livekit-client';
+import { Room, type LocalAudioTrack, type LocalVideoTrack } from '@dtelecom/livekit-client';
 import * as React from 'react';
 import { useMaybeRoomContext } from '../context';
 import { useObservableState } from './internal';
@@ -19,33 +19,58 @@ export interface UseMediaDeviceSelectProps {
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices | MDN enumerateDevices}
    */
   requestPermissions?: boolean;
+  /**
+   * this callback gets called if an error is thrown when failing to select a device and also if a user
+   * denied permissions, eventhough the `requestPermissions` option is set to `true`.
+   * Most commonly this will emit a MediaDeviceError
+   */
+  onError?: (e: Error) => void;
 }
 
-/** @public */
+/**
+ * The `useMediaDeviceSelect` hook is used to implement the `MediaDeviceSelect` component and
+ * returns o.a. the list of devices of a given kind (audioinput or videoinput), the currently active device
+ * and a function to set the the active device.
+ *
+ * @example
+ * ```tsx
+ * const { devices, activeDeviceId, setActiveMediaDevice } = useMediaDeviceSelect({kind: 'audioinput'});
+ * ```
+ * @public
+ */
 export function useMediaDeviceSelect({
   kind,
   room,
   track,
   requestPermissions,
+  onError,
 }: UseMediaDeviceSelectProps) {
   const roomContext = useMaybeRoomContext();
+
+  const roomFallback = React.useMemo(() => room ?? roomContext ?? new Room(), [room, roomContext]);
+
   // List of all devices.
   const deviceObserver = React.useMemo(
     () => createMediaDeviceObserver(kind, requestPermissions),
-    [kind, requestPermissions],
+    [kind, requestPermissions, onError],
   );
-  const devices = useObservableState(deviceObserver, []);
+  const devices = useObservableState(deviceObserver, [] as MediaDeviceInfo[]);
   // Active device management.
-  const [currentDeviceId, setCurrentDeviceId] = React.useState<string>('');
+  const [currentDeviceId, setCurrentDeviceId] = React.useState<string>(
+    roomFallback?.getActiveDevice(kind) ?? 'default',
+  );
   const { className, activeDeviceObservable, setActiveMediaDevice } = React.useMemo(
-    () => setupDeviceSelector(kind, room ?? roomContext, track),
-    [kind, room, roomContext, track],
+    () => setupDeviceSelector(kind, roomFallback),
+    [kind, roomFallback, track],
   );
 
   React.useEffect(() => {
     const listener = activeDeviceObservable.subscribe((deviceId) => {
+      if (!deviceId) {
+        return;
+      }
       log.info('setCurrentDeviceId', deviceId);
-      if (deviceId) setCurrentDeviceId(deviceId);
+      setCurrentDeviceId(deviceId);
     });
     return () => {
       listener?.unsubscribe();
