@@ -1,5 +1,5 @@
 import type { Subscriber, Subscription } from 'rxjs';
-import { Subject, map, Observable, startWith, finalize, filter, concat } from 'rxjs';
+import { map, Observable, startWith, filter, concat } from 'rxjs';
 import type { Participant, TrackPublication } from '@dtelecom/livekit-client';
 import { Room, RoomEvent, Track } from '@dtelecom/livekit-client';
 import type { RoomEventCallbacks } from '@dtelecom/livekit-client/dist/src/room/Room';
@@ -178,29 +178,53 @@ export function activeSpeakerObserver(room: Room) {
   );
 }
 
-export function createMediaDeviceObserver(kind?: MediaDeviceKind, requestPermissions = true) {
-  const onDeviceChange = async () => {
-    const newDevices = await Room.getLocalDevices(kind, requestPermissions);
-    deviceSubject.next(newDevices);
-  };
-  const deviceSubject = new Subject<MediaDeviceInfo[]>();
+export function createMediaDeviceObserver(
+  kind?: MediaDeviceKind,
+  requestPermissions = true,
+  onError?: (e: Error) => void,
+) {
+  // Initial devices fetch observable
+  const initialDevices$ = new Observable<MediaDeviceInfo[]>((subscriber) => {
+    Room.getLocalDevices(kind, requestPermissions)
+      .then((devices) => {
+        subscriber.next(devices);
+        subscriber.complete();
+      })
+      .catch((e) => {
+        onError?.(e);
+        subscriber.next([] as MediaDeviceInfo[]);
+        subscriber.complete();
+      });
+  });
 
-  const observable = deviceSubject.pipe(
-    finalize(() => {
-      navigator?.mediaDevices?.removeEventListener('devicechange', onDeviceChange);
-    }),
-  );
+  // Device change observable
+  const deviceChanges$ = new Observable<MediaDeviceInfo[]>((subscriber) => {
+    const onDeviceChange = async () => {
+      try {
+        const newDevices = await Room.getLocalDevices(kind, requestPermissions);
+        subscriber.next(newDevices);
+      } catch (e: any) {
+        onError?.(e);
+      }
+    };
 
-  if (typeof window !== 'undefined') {
-    if (!window.isSecureContext) {
-      throw new Error(
-        `Accessing media devices is available only in secure contexts (HTTPS and localhost), in some or all supporting browsers. See: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mediaDevices`,
-      );
+    if (typeof window !== 'undefined') {
+      if (!window.isSecureContext) {
+        throw new Error(
+          `Accessing media devices is available only in secure contexts (HTTPS and localhost), in some or all supporting browsers. See: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mediaDevices`,
+        );
+      }
+      navigator?.mediaDevices?.addEventListener('devicechange', onDeviceChange);
     }
-    navigator?.mediaDevices?.addEventListener('devicechange', onDeviceChange);
-  }
-  // because we rely on an async function, concat the promise to retrieve the initial values with the observable
-  return concat(Room.getLocalDevices(kind, requestPermissions), observable);
+
+    // Return unsubscribe function that cleans up when the observable is unsubscribed
+    return () => {
+      navigator?.mediaDevices?.removeEventListener('devicechange', onDeviceChange);
+    };
+  });
+
+  // Combine both observables
+  return concat(initialDevices$, deviceChanges$);
 }
 
 export function createDataObserver(room: Room) {
