@@ -99,7 +99,15 @@ export function MediaDeviceMenu({
         className="lk-button lk-button-menu"
         aria-pressed={isOpen}
         {...props}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          {/** android specific hack: if the menu is opened, we need to enumerate devices to get devices update */}
+          try {
+            void navigator.mediaDevices.enumerateDevices()
+          } catch (e) {
+            log.error('Failed to enumerate devices', e);
+          }
+        }}
         ref={button}
       >
         {props.children}
