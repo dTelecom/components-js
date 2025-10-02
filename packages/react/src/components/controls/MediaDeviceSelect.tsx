@@ -78,7 +78,7 @@ export function MediaDeviceSelect({
 
   const handleActiveDeviceChange = async (deviceId: string) => {
     try {
-      await setActiveMediaDevice(deviceId, { exact: exactMatch });
+      await setActiveMediaDevice(deviceId, { exact: exactMatch ?? true });
     } catch (e) {
       if (e instanceof Error) {
         onDeviceSelectError?.(e);
@@ -93,8 +93,12 @@ export function MediaDeviceSelect({
     [className, props],
   );
 
+  const hasDefault = !!devices.find((info) => info.label.toLowerCase().startsWith('default'));
+
   function isActive(deviceId: string, activeDeviceId: string, index: number) {
-    return deviceId === activeDeviceId || (index === 0 && activeDeviceId === 'default');
+    return (
+      deviceId === activeDeviceId || (!hasDefault && index === 0 && activeDeviceId === 'default')
+    );
   }
 
   return (
