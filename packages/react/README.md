@@ -1,21 +1,29 @@
-# LiveKit Components **React**
+# dTelecom React components
 
-A LiveKit Components implementation in [React](https://reactjs.org/).
+`@dtelecom/components-react` is a ready call UI for [dTelecom Cloud](https://cloud.dtelecom.org) rooms:
+participant grid, control bar, screen share and chat, plus the smaller components and hooks to build
+your own layout. It is dTelecom's build of LiveKit Components, so the names (`LiveKitRoom`,
+`VideoConference`, `useTracks`) are the same and LiveKit React code moves over with a package rename.
+
+**Documentation:** [Video conference with React](https://docs.dtelecom.org/guides/video-conference-react/)
+on [docs.dtelecom.org](https://docs.dtelecom.org).
 
 ## Install
 
 ```bash
-yarn install @dtelecom/components-react
+npm install @dtelecom/components-react @dtelecom/components-styles @dtelecom/livekit-client
 ```
 
 ## Usage
 
 ```tsx
-import { LiveKitRoom } from '@dtelecom/components-react';
+import '@dtelecom/components-styles';
+import { LiveKitRoom, VideoConference } from '@dtelecom/components-react';
 
-<LiveKitRoom token="<token>" serverUrl="<url-to-server>" connect={true} />;
+// token and wsUrl come from your backend (createToken in @dtelecom/server-sdk-js).
+<LiveKitRoom token={token} serverUrl={wsUrl} connect={true} audio={true} video={true} data-lk-theme="default">
+  <VideoConference />
+</LiveKitRoom>;
 ```
 
-## Architecture Overview
-
-![React specific implementation of LiveKit Components](./../../.github/assets/components-react-implementation.png)
+Create tokens on your server; never put the API key or secret in browser code.

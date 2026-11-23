@@ -1,16 +1,11 @@
-<!--BEGIN_BANNER_IMAGE-->
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/.github/banner_dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="/.github/banner_light.png">
-    <img style="width:100%;" alt="The LiveKit icon, the name of the repository and some sample code in the background." src="/.github/banner_light.png">
-  </picture>
-  <!--END_BANNER_IMAGE-->
+# dTelecom components
 
-<h1>
-  LiveKit Components
-</h1>
+React components and hooks for [dTelecom Cloud](https://cloud.dtelecom.org) rooms: a ready call UI
+(`VideoConference`) and the pieces to build your own. This is dTelecom's build of LiveKit Components,
+published as `@dtelecom/components-react`, `@dtelecom/components-styles` and `@dtelecom/components-core`.
 
-<!--BEGIN_DESCRIPTION-->Use this SDK to add real-time video, audio and data features to your React app. By connecting to a self- or cloud-hosted <a href="https://livekit.io/">LiveKit</a> server, you can quickly build applications like interactive live streaming or video calls with just a few lines of code.<!--END_DESCRIPTION-->
+**Documentation:** [Video conference with React](https://docs.dtelecom.org/guides/video-conference-react/)
+on [docs.dtelecom.org](https://docs.dtelecom.org).
 
 <br>
 

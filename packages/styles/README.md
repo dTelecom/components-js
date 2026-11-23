@@ -1,6 +1,15 @@
-# LiveKit Components **Styles**
+# dTelecom components styles
 
-Beautiful base styling for LiveKit components that you can use as is, build upon, or create your own.
+`@dtelecom/components-styles` is the default styling of
+[`@dtelecom/components-react`](https://www.npmjs.com/package/@dtelecom/components-react). Import it once
+and set `data-lk-theme="default"` on `LiveKitRoom`, or build your own styles on the `lk-` classes.
+
+```ts
+import '@dtelecom/components-styles';
+```
+
+**Documentation:** [Video conference with React](https://docs.dtelecom.org/guides/video-conference-react/)
+on [docs.dtelecom.org](https://docs.dtelecom.org).
 
 ### Dev notes
 

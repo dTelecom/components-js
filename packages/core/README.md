@@ -1,6 +1,9 @@
-# LiveKit Components **Core**
+# dTelecom components core
 
-This package is a wrapper around the [@dtelecom/client-sdk-js](https://github.com/dTelecom/client-sdk-js) package. It transforms the event based logic into simple to use observable state and component level APIs. This package is the core for all framework specific implementations.
+`@dtelecom/components-core` turns the event-based [`@dtelecom/livekit-client`](https://github.com/dTelecom/client-sdk-js)
+API into observable state for the framework packages. It is the internal base of
+[`@dtelecom/components-react`](https://www.npmjs.com/package/@dtelecom/components-react).
 
-> **Warning** this is a internal package and not intended to be used directly.
-> 
+> This is an internal package. Use `@dtelecom/components-react` in your app.
+
+**Documentation:** [docs.dtelecom.org](https://docs.dtelecom.org).
