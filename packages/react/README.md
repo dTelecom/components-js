@@ -2,11 +2,13 @@
 
 `@dtelecom/components-react` is a ready call UI for [dTelecom Cloud](https://cloud.dtelecom.org) rooms:
 participant grid, control bar, screen share and chat, plus the smaller components and hooks to build
-your own layout. It is dTelecom's build of LiveKit Components, so the names (`LiveKitRoom`,
-`VideoConference`, `useTracks`) are the same and LiveKit React code moves over with a package rename.
+your own layout. It is dTelecom's build of LiveKit Components with components such as `LiveKitRoom`,
+`VideoConference` and `useTracks`.
 
 **Documentation:** [Video conference with React](https://docs.dtelecom.org/guides/video-conference-react/)
 on [docs.dtelecom.org](https://docs.dtelecom.org).
+
+Run the [two-participant React example](https://github.com/dTelecom/components-js/tree/dtelecom/examples/first-call) for a complete browser and backend implementation.
 
 ## Install
 
