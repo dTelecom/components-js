@@ -1,0 +1,10 @@
+name: Prepare the external browser consumer
+description: Install the candidate npm tarballs in the first-call app, build it and install Chromium.
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        "$GITHUB_ACTION_PATH/prepare.sh" "$RUNNER_TEMP/web-consumer" "$RUNNER_TEMP/npm-packages/"*.tgz
+        cd "$RUNNER_TEMP/web-consumer"
+        npx --no-install playwright install --with-deps --only-shell chromium

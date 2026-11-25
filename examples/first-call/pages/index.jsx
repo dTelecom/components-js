@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LiveKitRoom, VideoConference } from '@dtelecom/components-react';
 
-export default function FirstCall() {
+export default function FirstCall({ children }) {
   const [session, setSession] = useState(null);
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState('');
@@ -40,6 +40,7 @@ export default function FirstCall() {
           onError={(err) => setError(err.message)}
         >
           <VideoConference />
+          {children}
         </LiveKitRoom>
       ) : (
         <button onClick={join} disabled={joining}>{joining ? 'Joining…' : 'Join call'}</button>

@@ -1,0 +1,71 @@
+name: Consumer
+
+on:
+  push:
+    branches: [dtelecom]
+  pull_request:
+    branches: [dtelecom]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.14.0'
+          package-manager-cache: false
+      - name: Test and pack the source
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          mkdir -p "$RUNNER_TEMP/npm-packages"
+          yarn install --non-interactive
+          yarn build:react
+          for package in core react styles; do
+            yarn workspace "@dtelecom/components-$package" test --threads=false
+            npm pack "./packages/$package" --pack-destination "$RUNNER_TEMP/npm-packages" --silent
+          done
+      - uses: ./tooling/consumer
+      - name: Load the installed SDK in Chromium
+        run: cd "$RUNNER_TEMP/web-consumer" && node check.mjs smoke
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dtelecom'
+        with:
+          name: npm-packages
+          path: ${{ runner.temp }}/npm-packages/*.tgz
+          if-no-files-found: error
+          retention-days: 1
+
+  live:
+    needs: package
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dtelecom' && github.repository == 'dTelecom/components-js'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: sdk-live-tests
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.14.0'
+          package-manager-cache: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: npm-packages
+          path: ${{ runner.temp }}/npm-packages
+      - uses: ./tooling/consumer
+      - name: Verify a two-participant Cloud call and full reconnect
+        run: cd "$RUNNER_TEMP/web-consumer" && node check.mjs live
+        env:
+          DTELECOM_API_KEY: ${{ secrets.DTELECOM_API_KEY }}
+          DTELECOM_API_SECRET: ${{ secrets.DTELECOM_API_SECRET }}
+          DTELECOM_CLOUD_URL: ${{ secrets.DTELECOM_CLOUD_URL }}
