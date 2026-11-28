@@ -27,7 +27,7 @@ jobs:
           corepack enable
           corepack prepare yarn@1.22.22 --activate
           mkdir -p "$RUNNER_TEMP/npm-packages"
-          yarn install --non-interactive
+          yarn install --frozen-lockfile --non-interactive
           yarn build:react
           for package in core react styles; do
             yarn workspace "@dtelecom/components-$package" test --threads=false

@@ -10,8 +10,8 @@
   "dependencies": {
     "@dtelecom/components-react": "1.0.47",
     "@dtelecom/components-styles": "1.0.28",
-    "@dtelecom/livekit-client": "1.12.27",
-    "@dtelecom/server-sdk-js": "4.3.0",
+    "@dtelecom/livekit-client": "1.13.0",
+    "@dtelecom/server-sdk-js": "4.4.0",
     "next": "16.4.6",
     "react": "19.3.1",
     "react-dom": "19.3.1"

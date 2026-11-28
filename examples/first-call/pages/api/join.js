@@ -14,12 +14,12 @@ export default async function join(req, res) {
 
   res.setHeader('Cache-Control', 'no-store');
   try {
-    const { token, wsUrl } = await new CloudClient().createToken({
+    const { token, wsUrl, fallbackUrls } = await new CloudClient().createToken({
       room,
       identity: randomUUID(),
       ttl: '10m',
     });
-    return res.status(200).json({ token, wsUrl });
+    return res.status(200).json({ token, wsUrl, fallbackUrls });
   } catch {
     return res.status(502).json({ error: 'Cloud could not issue a participant token.' });
   }

@@ -31,6 +31,7 @@ export default function FirstCall({ children }) {
         <LiveKitRoom
           serverUrl={session.wsUrl}
           token={session.token}
+          connectOptions={{ fallbackUrls: session.fallbackUrls }}
           connect
           audio
           video

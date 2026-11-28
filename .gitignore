@@ -8,3 +8,4 @@ yarn-error.log
 generated/
 .idea
 yarn.lock
+!/yarn.lock

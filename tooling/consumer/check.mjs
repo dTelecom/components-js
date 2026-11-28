@@ -96,8 +96,26 @@ try {
   console.log('External first-call app loaded.');
   if (mode === 'live') {
     phase = 'join and receive initial audio, video and chat';
+    // Make one browser start with an unreachable endpoint. Keep the real grant
+    // and alternatives returned by the example's server route.
+    const alternateOrigins = new Set();
+    const signalingOrigins = new Set();
+    pages[1].on('websocket', (socket) => signalingOrigins.add(new URL(socket.url()).origin));
+    await pages[1].route('**/api/join', async (route) => {
+      const response = await route.fetch();
+      if (!response.ok()) return route.fulfill({ response });
+      const grant = await response.json();
+      const primaryOrigin = new URL(grant.wsUrl).origin;
+      const alternatives = (grant.fallbackUrls ?? []).filter((url) => new URL(url).origin !== primaryOrigin);
+      for (const url of alternatives) alternateOrigins.add(new URL(url).origin);
+      const unavailable = 'wss://127.0.0.1:1'; // Chromium blocks this port before sending credentials.
+      await route.fulfill({ response, json: { ...grant, wsUrl: unavailable, fallbackUrls: [unavailable, ...alternatives] } });
+    });
     for (const page of pages) await page.getByRole('button', { name: 'Join call' }).click();
     await Promise.all(pages.map(waitForMedia));
+    assert.ok([...alternateOrigins].some((origin) => signalingOrigins.has(origin)),
+      'Expected a connection to a ranked alternate from the Cloud grant');
+    console.log('The browser joined through a ranked alternate after primary unavailability.');
     await exchangeChat(pages);
     const version = await pages[0].evaluate(() => window.callProbe.serverVersion);
     console.log('Two-way audio, video and chat passed. Server version:', /^[\w.+-]{1,80}$/.test(version ?? '') ? version : 'not advertised');
